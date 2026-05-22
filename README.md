@@ -37,7 +37,7 @@ Then run setup:
 /cairn-setup
 ```
 
-`/cairn-setup` walks you through identity (~2 minutes) — it scans your existing Claude Code memory for clues (name, timezone, vault path), asks 5–7 quick questions to fill in what's missing, and writes `~/.claude/cairn/identity.md`. Re-runnable any time.
+`/cairn-setup` walks you through identity (~2 minutes) — it scans your existing Claude Code memory for clues (name, timezone, vault path), asks 5–7 quick questions to fill in what's missing, and writes `~/.claude/cairn/config.md`. Re-runnable any time.
 
 ---
 
@@ -164,10 +164,10 @@ The framework conventions live in [`plugins/cairn-notes/AGENTS.md`](plugins/cair
 ## Troubleshooting
 
 **"`/capture` says it can't find my identity"**
-Identity lives at `~/.claude/cairn/identity.md`. Run `/cairn-setup` to create or update it. Re-running is safe — it pre-fills from the existing file.
+Identity lives at `~/.claude/cairn/config.md`. Run `/cairn-setup` to create or update it. Re-running is safe — it pre-fills from the existing file.
 
 **"I want to change my vault location"**
-Edit `personal_vault` (or `notes_root`) in `~/.claude/cairn/identity.md`. The next invocation picks up the change.
+Edit `personal_vault` (or `notes_root`) in `~/.claude/cairn/config.md`. The next invocation picks up the change.
 
 **"Scribe keeps writing to `~/notes/second-brain/` when I'm inside a repo"**
 That means the `.notes/` symlink in your repo isn't set up. Start a fresh session inside the repo and run `/capture` once — scribe creates `.notes/` → `~/notes/{repo-name}/` and adds it to `.gitignore` on first capture.

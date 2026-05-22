@@ -6,7 +6,7 @@ This file documents the conventions agents follow in the cairn-notes system. It 
 
 ## Identity
 
-User identity lives at `~/.claude/cairn/identity.md` and is populated by the `/cairn-setup` slash command on first use. Agents read this file at invocation to resolve `{{USER_NAME}}`, `{{TIMEZONE}}`, `{{PERSONAL_VAULT}}`, `{{WORKING_HOURS}}`, `{{COGNITIVE_PEAK}}`, and `{{PRONOUNS}}`.
+User identity lives at `~/.claude/cairn/config.md` and is populated by the `/cairn-setup` slash command on first use. Agents read this file at invocation to resolve `{{USER_NAME}}`, `{{TIMEZONE}}`, `{{PERSONAL_VAULT}}`, `{{WORKING_HOURS}}`, `{{COGNITIVE_PEAK}}`, and `{{PRONOUNS}}`.
 
 **If identity is missing:** the invoked skill (or spoke, when reached directly) tells the user to run `/cairn-setup` and stops. Skills don't bootstrap identity inline — `/cairn-setup` owns that flow.
 
@@ -224,7 +224,7 @@ Three storage surfaces. The decision rule is: "does this vary by user?" → `~/.
 
 | Surface | Varies by | Examples |
 |---|---|---|
-| `~/.claude/cairn/*.md` | User (name, vault path, working hours, source lists) | `identity.md` (via `/cairn-setup`), `planning-sources.md` (via `/plan-workday`) |
+| `~/.claude/cairn/*.md` | User (name, vault path, working hours, source lists) | `config.md` (via `/cairn-setup`), `planning-sources.md` (via `/plan-workday`) |
 | `.notes/.agents/{skill}/` | Project (per-repo caches, drafts, session context) | `.notes/.agents/drafts/`, `.notes/.agents/issue-create/type-ids.md` |
 | Plugin body (`SKILL.md`, `references/`) | Neither — ships with the plugin | Static instruction text, example templates |
 

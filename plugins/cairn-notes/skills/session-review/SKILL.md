@@ -124,7 +124,7 @@ This is the filter that does the real work; downstream steps only handle survivo
 A session often closes a loop that was tracked on today's daily plan (e.g., `[P3 afternoon] Triage #646 / #734 / #731`). Step 1's lenses target knowledge moments (technical discoveries, collaboration patterns); the Signal Test is insight-tuned. Tracked-item resolutions are state changes, so they slip through both. This step catches them.
 
 1. **Resolve today's plan path** (same convention as `workday-planning` Phase 0):
-   - Read `~/.claude/cairn/identity.md` → `notes_root` (default `~/notes`), `personal_vault` (default `second-brain`), `TZ` (IANA).
+   - Read `~/.claude/cairn/config.md` → `notes_root` (default `~/notes`), `personal_vault` (default `second-brain`), `TZ` (IANA).
    - Read `~/.claude/cairn/planning-sources.md` frontmatter → `output_folder` (default `Daily`).
    - TZ validation: must match `^(UTC|[A-Za-z][A-Za-z0-9_+-]*/[A-Za-z][A-Za-z0-9_+-]*(/[A-Za-z][A-Za-z0-9_+-]*)?)$`. On mismatch, warn once and fall back to system TZ. If the validated-TZ `date` invocation exits non-zero (shape-valid but the zone doesn't exist on this system, e.g. `America/Fakeville`), re-run without `TZ` and emit the same fallback warning.
    - Compute today's date in that zone: `TZ="{{TIMEZONE}}" date +%Y-%m-%d` (or plain `date +%Y-%m-%d` on fallback).

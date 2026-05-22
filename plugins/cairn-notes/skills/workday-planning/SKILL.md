@@ -105,8 +105,8 @@ The daily plan is always written to the **personal vault**. The path is built fr
 {notes_root}/{personal_vault}/{output_folder}/{YYYY-MM-DD}-daily-plan.md
 ```
 
-- `notes_root` — from `~/.claude/cairn/identity.md` (default `~/notes`)
-- `personal_vault` — from `~/.claude/cairn/identity.md` (default `second-brain`)
+- `notes_root` — from `~/.claude/cairn/config.md` (default `~/notes`)
+- `personal_vault` — from `~/.claude/cairn/config.md` (default `second-brain`)
 - `output_folder` — from the **top-level `output_folder` key** in `~/.claude/cairn/planning-sources.md` frontmatter (default `Daily`)
 
 Typical resolved path: `~/notes/second-brain/Daily/2026-04-21-daily-plan.md`.
@@ -139,7 +139,7 @@ If missing, bootstrap asks the user which folder to use (default `Daily`) and wr
 
 ### Phase 0 — Resolve mode, vault, and output path
 
-1. Read `~/.claude/cairn/identity.md`. Resolve:
+1. Read `~/.claude/cairn/config.md`. Resolve:
    - `{{TIMEZONE}}` — must be an IANA zone string (e.g. `America/New_York`, `Europe/London`, `UTC`). **Validate before using** (see below). If missing or invalid, warn and fall back to system TZ — don't block planning on a config nit.
    - `{{PERSONAL_VAULT}}` (fall back to `second-brain`).
    - `{{NOTES_ROOT}}` (fall back to `~/notes`).
@@ -433,7 +433,7 @@ Follow-up prompts by type:
 - **Google Doc** — ask for URL or ID; extract ID from URL; ask for a short label; ask scan mode (default `most-recent`, offer `most-recent:N` or `whole-doc`).
 - **GitHub issues/PRs** — ask for `owner/repo`; ask for `gh search` filter (default `"assignee:@me state:open"`).
 - **GitHub Project** — ask for owner (org or user) + project number (e.g., `17`). Optional: a status filter (e.g., `"In progress"`) and an item limit (default 50). If the user pastes a URL like `https://github.com/orgs/HHS/projects/17`, parse owner + number from it.
-- **Obsidian** — ask for vault name (default from `identity.md` `personal_vault`); ask for path/glob; ask scan mode.
+- **Obsidian** — ask for vault name (default from `config.md` `personal_vault`); ask for path/glob; ask scan mode.
 - **URL** — ask for URL and label.
 
 ### Step 4 — Confirm & write

@@ -16,7 +16,7 @@ _While migration into `core/` is in progress, host-agnostic content can land in 
 
 1. **Does it serve the capture / recall / planning core?** Not every useful utility belongs here. A Godot project assistant is useful, but it isn't about capture or planning — it's an example, not a utility.
 2. **Is it Obsidian-aware?** Wikilinks, frontmatter, and the existing vault structure should feel native. If your skill writes raw JSON to a flat file, rethink it.
-3. **Is it free of personal hardcoding?** No specific names, companies, projects, vault paths, or domain-specific jargon (VA.gov, HHS, "my SnowboardTechie brand"). Use placeholders (`{{USER_NAME}}`, `{{NOTES_ROOT}}`, `{{PERSONAL_VAULT}}`) read from `~/.claude/cairn/identity.md`.
+3. **Is it free of personal hardcoding?** No specific names, companies, projects, vault paths, or domain-specific jargon (VA.gov, HHS, "my SnowboardTechie brand"). Use placeholders (`{{USER_NAME}}`, `{{NOTES_ROOT}}`, `{{PERSONAL_VAULT}}`) read from `~/.claude/cairn/config.md`.
 4. **Would a teammate you've never met find it useful?** If the honest answer is "only people who work exactly like me," it's an example — open a PR to `plugins/cairn-notes/examples/` instead.
 5. **Is it host-agnostic, or genuinely Claude-Code-specific?** Prose-only content (skill bodies, agent personas, templates) belongs eventually under `core/`; anything that calls runtime tools, reads host config paths (`~/.claude/`), or depends on Claude-Code-specific frontmatter stays in `plugins/cairn-notes/`. See [`core/AGENTS.md`](core/AGENTS.md).
 
@@ -34,7 +34,7 @@ Users invoke slash commands (skills); skills delegate to helper spokes via Task 
 
 ### Identity is authoritative
 
-Every agent that needs `{{USER_NAME}}`, `{{TIMEZONE}}`, `{{NOTES_ROOT}}`, `{{WORKING_HOURS}}`, or `{{COGNITIVE_PEAK}}` reads `~/.claude/cairn/identity.md` on startup and substitutes at runtime. Don't hardcode. Degrade gracefully if the file is missing.
+Every agent that needs `{{USER_NAME}}`, `{{TIMEZONE}}`, `{{NOTES_ROOT}}`, `{{WORKING_HOURS}}`, or `{{COGNITIVE_PEAK}}` reads `~/.claude/cairn/config.md` on startup and substitutes at runtime. Don't hardcode. Degrade gracefully if the file is missing.
 
 ### Cross-tool portable
 
@@ -94,5 +94,5 @@ Open a [GitHub issue](https://github.com/SnowboardTechie/cairn-notes/issues). He
 
 - What you expected.
 - What happened instead.
-- Your `~/.claude/cairn/identity.md` (with sensitive bits redacted) — vault paths and working hours matter for reproducing behavior.
+- Your `~/.claude/cairn/config.md` (with sensitive bits redacted) — vault paths and working hours matter for reproducing behavior.
 - The relevant agent/skill name and a short excerpt of the conversation.

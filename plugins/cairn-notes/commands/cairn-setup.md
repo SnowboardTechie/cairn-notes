@@ -1,10 +1,10 @@
 ---
-description: Onboarding flow for cairn-notes — writes ~/.claude/cairn/identity.md with user's name, vault config, working hours, and cognitive peak. Pre-fills from existing Claude Code memory where possible.
+description: Onboarding flow for cairn-notes — writes ~/.claude/cairn/config.md with user's name, vault config, working hours, and cognitive peak. Pre-fills from existing Claude Code memory where possible.
 ---
 
 # /cairn-setup
 
-You are running the cairn-notes onboarding flow. Your job: produce a valid `~/.claude/cairn/identity.md` file with minimal friction.
+You are running the cairn-notes onboarding flow. Your job: produce a valid `~/.claude/cairn/config.md` file with minimal friction.
 
 ## Philosophy
 
@@ -34,7 +34,7 @@ This will take about 2 minutes. Here's the plan:
   2. I'll ask 5-7 short questions about anything I couldn't infer.
 
   3. I'll show you the final identity before writing it to
-     ~/.claude/cairn/identity.md.
+     ~/.claude/cairn/config.md.
 
   4. I'll offer to allowlist the permissions this plugin needs so you don't
      get interrupted every time an agent reads your notes or identity. I'll
@@ -74,7 +74,7 @@ Read whatever exists. Extract: name, pronouns, timezone, working hours, vault pr
 
 ### 1.3 Existing identity file
 
-If `~/.claude/cairn/identity.md` already exists, read it. This is a re-run, not a first-run. Show current values and ask which to update.
+If `~/.claude/cairn/config.md` already exists, read it. This is a re-run, not a first-run. Show current values and ask which to update.
 
 ---
 
@@ -145,7 +145,7 @@ cognitive_peak:
 pronouns: she/her
 ---
 
-Write this to ~/.claude/cairn/identity.md?
+Write this to ~/.claude/cairn/config.md?
 ```
 
 If approved, write. If not, ask which fields to change.
@@ -154,7 +154,7 @@ If approved, write. If not, ask which fields to change.
 
 ## Phase 4: Write
 
-Write to `~/.claude/cairn/identity.md`:
+Write to `~/.claude/cairn/config.md`:
 
 ```markdown
 ---
@@ -467,7 +467,7 @@ If some are present and some missing (rare, e.g., user deleted a few manually), 
 After writing:
 
 ```
-cairn-notes is set up. Identity written to ~/.claude/cairn/identity.md.
+cairn-notes is set up. Identity written to ~/.claude/cairn/config.md.
 
 Quick test: try `/capture this is my first cairn` — `/capture` will:
 - Auto-detect the note type
@@ -525,7 +525,7 @@ Use their answer as the personal_vault default.
 
 ## Constraints
 
-- **Never** overwrite `~/.claude/cairn/identity.md` without user confirmation
+- **Never** overwrite `~/.claude/cairn/config.md` without user confirmation
 - **Never** write to locations outside `~/.claude/cairn/`
 - **Always** validate that timezone is a valid IANA string before writing
 - **Always** expand `~` to absolute paths in the file

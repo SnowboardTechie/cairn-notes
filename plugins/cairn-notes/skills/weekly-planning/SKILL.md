@@ -30,7 +30,7 @@ Opinionated flow for ADHD brains: mandatory vent, hard cap at 3 rocks, permissio
 
 Reads two files; neither is required — both have sensible defaults.
 
-### `~/.claude/cairn/identity.md` (vault root + personal vault)
+### `~/.claude/cairn/config.md` (vault root + personal vault)
 
 ```yaml
 notes_root: ~/notes            # default: ~/notes
@@ -77,7 +77,7 @@ Run as an interactive Q&A. Each phase maps to a section of the output note. Conv
 
 Before asking anything:
 
-1. Resolve `notes_root` + `personal_vault` from `identity.md`. Resolve `weekly_planning.output_folder` from `planning-sources.md` (default `Journal`). Compute the output path.
+1. Resolve `notes_root` + `personal_vault` from `config.md`. Resolve `weekly_planning.output_folder` from `planning-sources.md` (default `Journal`). Compute the output path.
 2. Check for last week's planning note: `Glob` `{notes_root}/{personal_vault}/{weekly_planning.output_folder}/*-weekly-plan.md`, take the newest. If found, read it — especially the rocks and end-of-week sections. Note any incomplete rocks or carry-forward items.
 3. **Invoke scout** for developer-forge obligations (unless the user said "skip github" / "skip forge" / "no forgejo" earlier in the session):
 
@@ -355,5 +355,5 @@ Workday-planning's bootstrap is supposed to preserve this key (see its Bootstrap
 - Do NOT allow more than 3 rocks without pushback.
 - Do NOT make the session feel like a performance review — it's planning, not grading.
 - Do NOT add rocks the user didn't choose — this is their plan, not yours.
-- Do NOT hardcode vault paths — always resolve from `identity.md` with fallback defaults.
+- Do NOT hardcode vault paths — always resolve from `config.md` with fallback defaults.
 - ALWAYS present the whiteboard summary at the end — it's the bridge between digital and physical.
