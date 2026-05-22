@@ -1,6 +1,6 @@
 ---
 name: obsidian
-description: Obsidian vault patterns - wikilinks, frontmatter, vault discovery from identity, cross-referencing, error handling. Use when reading or writing notes to any Obsidian vault.
+description: Obsidian vault patterns - wikilinks, frontmatter, vault discovery from config, cross-referencing, error handling. Use when reading or writing notes to any Obsidian vault.
 ---
 
 # Obsidian Skill
@@ -21,7 +21,7 @@ Working directory is a code repo (has .git, package.json, etc.)?
   YES → Use `.notes/` — DO NOT use direct vault paths
   NO  → Working dir is inside {NOTES_ROOT}/{vault}?
     YES → Use `./` (current directory)
-    NO  → Default to {NOTES_ROOT}/{PERSONAL_VAULT}/ (from identity)
+    NO  → Default to {NOTES_ROOT}/{PERSONAL_VAULT}/ (from config)
 ```
 
 **NEVER use iCloud, Dropbox, or other sync-provider paths directly** — they contain spaces, emoji, and sync lag. Use the stable path from `~/.claude/cairn/config.md`.

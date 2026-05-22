@@ -1,18 +1,18 @@
 ---
-description: Onboarding flow for cairn-notes — writes ~/.claude/cairn/config.md with user's name, vault config, working hours, and cognitive peak. Pre-fills from existing Claude Code memory where possible.
+description: Vault config flow for cairn-notes — writes ~/.claude/cairn/config.md with notes root, personal vault, working hours, and cognitive peak. Pre-fills from existing Claude Code memory where possible.
 ---
 
 # /cairn-setup
 
-You are running the cairn-notes onboarding flow. Your job: produce a valid `~/.claude/cairn/config.md` file with minimal friction.
+You are running the cairn-notes vault config flow. Your job: produce a valid `~/.claude/cairn/config.md` file with minimal friction.
 
 ## Philosophy
 
 - **Tell the user what you're doing before you do it.** Never read files or run commands without first saying what and why. Users should never face a permission prompt and wonder "why is this happening?"
 - **Pre-fill, don't interrogate.** Scan existing Claude Code context first. Ask only what you can't infer.
 - **Sensible defaults.** Every question has a default the user can accept with Enter.
-- **5-7 questions max.** Anything more is a flaw in your discovery logic.
-- **Confirm before writing.** Show the final identity file and ask for approval.
+- **4-5 questions max.** Anything more is a flaw in your discovery logic.
+- **Confirm before writing.** Show the final config file and ask for approval.
 - **Show permissions verbatim.** When offering to add permissions to settings, show the exact list — never paraphrase as "necessary permissions."
 
 ---
@@ -27,17 +27,17 @@ Welcome to cairn-notes setup.
 This will take about 2 minutes. Here's the plan:
 
   1. I'll scan your existing Claude Code setup (CLAUDE.md, memory files) for
-     any identity info I can pre-fill — name, timezone, etc. You may see a
-     few permission prompts for reading those files. None of this data leaves
-     your machine.
+     any vault config I can pre-fill — timezone, notes root, etc. You may
+     see a few permission prompts for reading those files. None of this data
+     leaves your machine.
 
-  2. I'll ask 5-7 short questions about anything I couldn't infer.
+  2. I'll ask 4-5 short questions about anything I couldn't infer.
 
-  3. I'll show you the final identity before writing it to
+  3. I'll show you the final config before writing it to
      ~/.claude/cairn/config.md.
 
   4. I'll offer to allowlist the permissions this plugin needs so you don't
-     get interrupted every time an agent reads your notes or identity. I'll
+     get interrupted every time an agent reads your notes or config. I'll
      show you exactly what those permissions are before adding them.
 
 Starting now.
@@ -52,27 +52,26 @@ Only after printing this intro do you proceed to Phase 1.
 Tell the user what you're doing, then gather signals from these sources in parallel:
 
 ```
-Scanning for existing identity info...
+Scanning for existing vault config...
 ```
 
 ### 1.1 Existing Claude Code memory
 
-Check for identity signals in:
+Check for config signals in:
 
-- `~/.claude/CLAUDE.md` — global instructions (look for name, role, timezone)
-- `~/.claude/memory/*.md` — user memory files (profile, voice, preferences)
+- `~/.claude/CLAUDE.md` — global instructions (look for timezone, working hours)
+- `~/.claude/memory/*.md` — user memory files (preferences, schedule)
 - `~/.claude/projects/*/memory/*.md` — project-scoped memory files
 - `~/.claude/projects/*/memory/MEMORY.md` — memory index pointing to relevant files
 
-Read whatever exists. Extract: name, pronouns, timezone, working hours, vault preferences, role.
+Read whatever exists. Extract: timezone, working hours, vault preferences.
 
 ### 1.2 System signals
 
 - `echo $TZ` or `date +%Z` — timezone (Bash: one bare command)
 - `Glob(pattern="~/notes/*/")` — existing vault names (Glob, not `ls`)
-- `echo $USER` — fallback for name (Bash: one bare command)
 
-### 1.3 Existing identity file
+### 1.3 Existing config file
 
 If `~/.claude/cairn/config.md` already exists, read it. This is a re-run, not a first-run. Show current values and ask which to update.
 
@@ -84,55 +83,44 @@ Use AskUserQuestion for each item. Pre-fill with discovered values. User can acc
 
 ### Required questions
 
-**Q1: Your name**
-- Default: from CLAUDE.md, memory files, or `$USER`
-- Used by: forge, kindle, and other skills/spokes that address the user by name
-- Example: "Jane Doe"
-
-**Q2: Timezone**
+**Q1: Timezone**
 - Default: from `$TZ`, `date +%Z`, or memory files (e.g., "Pacific timezone" → America/Los_Angeles)
 - Used by: daily note timestamps, forge working hours
 - Format: IANA timezone (America/Los_Angeles, America/New_York, Europe/London, etc.)
 
-**Q3: Personal vault name**
+**Q2: Personal vault name**
 - Default: `second-brain` (or first name in `~/notes/*/` if one exists)
 - Used by: scribe routing for cross-project and personal notes
 - Creates: `~/notes/{name}/` on first use if missing
 
-**Q4: Notes root directory**
+**Q3: Notes root directory**
 - Default: `~/notes`
 - Used by: all vault path resolution
-- Expand `~` when writing to identity file
+- Expand `~` when writing to config file
 
-**Q5: Working hours**
+**Q4: Working hours**
 - Default from memory if present (e.g., "7:30am - 4pm PT" → start 07:30, end 16:00)
 - Two sub-questions: start time (HH:MM), end time (HH:MM)
 - Used by: forge for block scheduling and end-of-day detection
 
 ### Optional questions (offer to skip)
 
-**Q6: Cognitive peak window**
+**Q5: Cognitive peak window**
 - Default: first 2-3 hours of working day (matches most morning-person patterns)
 - Two sub-questions: start time, end time
 - Used by: forge to sequence hardest tasks into peak window
 - Skip option: "Use default (first 2 hours of working day)"
 
-**Q7: Pronouns / preferred address**
-- Default: name only (no pronoun)
-- Used by: skills/spokes that adapt conversational style when addressing the user
-- Skip option: "Just use my name"
-
 ---
 
 ## Phase 3: Confirm
 
-Before writing, show the full identity file and ask:
+Before writing, show the full config file and ask:
 
 ```
-Here's your cairn-notes identity:
+Here's your cairn-notes config:
 
 ---
-name: Jane Doe
 timezone: America/Los_Angeles
 notes_root: ~/notes
 personal_vault: second-brain
@@ -142,7 +130,6 @@ working_hours:
 cognitive_peak:
   start: "07:30"
   end: "10:00"
-pronouns: she/her
 ---
 
 Write this to ~/.claude/cairn/config.md?
@@ -158,7 +145,6 @@ Write to `~/.claude/cairn/config.md`:
 
 ```markdown
 ---
-name: {{NAME}}
 timezone: {{TIMEZONE}}
 notes_root: {{NOTES_ROOT}}
 personal_vault: {{PERSONAL_VAULT}}
@@ -168,10 +154,9 @@ working_hours:
 cognitive_peak:
   start: "{{CP_START}}"
   end: "{{CP_END}}"
-pronouns: {{PRONOUNS}}
 ---
 
-# cairn-notes — User Identity
+# cairn-notes — Vault Config
 
 Generated by `/cairn-setup` on {{DATE}}.
 
@@ -179,13 +164,11 @@ Re-run `/cairn-setup` any time to update. Skills and spokes read this file at in
 
 ## Fields
 
-- **name** — for direct address by skills and spokes that greet by name
 - **timezone** — IANA timezone for daily notes, timestamps, working-hour detection
 - **notes_root** — root directory for all vaults
 - **personal_vault** — default vault for cross-project / personal notes
 - **working_hours** — start/end in 24-hour format; forge uses this for block planning
 - **cognitive_peak** — when you do your best analytical work; forge sequences hardest tasks here
-- **pronouns** — optional; for natural conversational style
 ```
 
 Also ensure `~/.claude/cairn/` directory exists. Create it if missing.
@@ -200,7 +183,7 @@ Without this, the user will hit a permission prompt for almost every operation. 
 
 **Critical.** Claude Code does not reliably expand `~` inside permission patterns — entries like `Read(~/notes/**)` silently never match, so every read still prompts. Before rendering or writing any entries, compute:
 
-- `NOTES_ROOT_ABS` — `notes_root` from identity, with `~` replaced by `$HOME` (e.g., `/Users/bryan/notes`). If already absolute, use as-is.
+- `NOTES_ROOT_ABS` — `notes_root` from config, with `~` replaced by `$HOME` (e.g., `/Users/bryan/notes`). If already absolute, use as-is.
 - `CAIRN_HOME_ABS` — `$HOME/.claude/cairn` (always absolute).
 
 Use `echo $HOME` via Bash if you need to resolve `$HOME`. All subsequent entries reference these resolved values, never `~`.
@@ -214,7 +197,7 @@ Use `echo $HOME` via Bash if you need to resolve `$HOME`. All subsequent entries
 Permission configuration
 
 cairn-notes needs to read, search, and write across your notes folders
-and identity file without constant prompting. The cleanest way to do
+and config file without constant prompting. The cleanest way to do
 this uses Claude Code's built-in "auto" permission mode (research preview)
 plus a narrow deny list for genuinely dangerous operations.
 
@@ -224,14 +207,14 @@ If you approve, I'll set these values in ~/.claude/settings.json:
     → Auto-approves routine tool calls with background safety checks.
       Deny rules are still enforced; auto mode does NOT disable safety.
 
-  allow — notes/identity paths (14 entries, every tool the spokes use):
+  allow — notes/config paths (14 entries, every tool the spokes use):
 
     Notes vault ({NOTES_ROOT_ABS}/**):
       • Read, Write, Edit   — load, save, update notes
       • Glob, Grep          — find notes by filename or content
 
-    Identity file ({CAIRN_HOME_ABS}/**):
-      • Read, Write, Edit   — load/update identity on re-run
+    Config file ({CAIRN_HOME_ABS}/**):
+      • Read, Write, Edit   — load/update config on re-run
       • Glob                — existence checks
 
     Project-local view (.notes/**, symlink inside each repo):
@@ -244,7 +227,7 @@ If you approve, I'll set these values in ~/.claude/settings.json:
     • Bash(readlink:*)                 — inspect the .notes symlink
     • Bash(rm .notes/**:*)             — pyre file deletion (scoped to vault)
     • Bash(rm -r .notes/.agents/**:*)  — task-cleanup recursive (working state only)
-    • Bash(echo:*)                     — identity discovery ($USER, $TZ, $HOME)
+    • Bash(echo:*)                     — config discovery ($TZ, $HOME)
     • Bash(date:*)                     — timezone discovery
     • Bash(test:*)                     — file/symlink existence checks
 
@@ -333,7 +316,7 @@ Edit({NOTES_ROOT_ABS}/**)
 Glob({NOTES_ROOT_ABS}/**)
 Grep({NOTES_ROOT_ABS}/**)
 
-# Identity file (4)
+# Config file (4)
 Read({CAIRN_HOME_ABS}/**)
 Write({CAIRN_HOME_ABS}/**)
 Edit({CAIRN_HOME_ABS}/**)
@@ -467,7 +450,7 @@ If some are present and some missing (rare, e.g., user deleted a few manually), 
 After writing:
 
 ```
-cairn-notes is set up. Identity written to ~/.claude/cairn/config.md.
+cairn-notes is set up. Config written to ~/.claude/cairn/config.md.
 
 Quick test: try `/capture this is my first cairn` — `/capture` will:
 - Auto-detect the note type
@@ -501,9 +484,9 @@ Which should cairn-notes use?
 
 Let user pick or type a third option.
 
-### Re-run with existing identity
+### Re-run with existing config
 
-Show current identity, ask "which fields to update?" with a list. Only re-ask selected fields. Preserve the rest.
+Show current config, ask "which fields to update?" with a list. Only re-ask selected fields. Preserve the rest.
 
 ### `~/notes/` already exists with custom structure
 

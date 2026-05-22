@@ -4,7 +4,7 @@ Issues and PRs welcome. This plugin is maintained in the open because the captur
 
 ## Before you start
 
-Read [`plugins/cairn-notes/AGENTS.md`](plugins/cairn-notes/AGENTS.md). It's the framework spec — identity, vault routing, worktree resolution, the skill-and-spoke conventions, cross-tool portability rules. Every skill and spoke in this plugin obeys it. Yours should too.
+Read [`plugins/cairn-notes/AGENTS.md`](plugins/cairn-notes/AGENTS.md). It's the framework spec — vault config, vault routing, worktree resolution, the skill-and-spoke conventions, cross-tool portability rules. Every skill and spoke in this plugin obeys it. Yours should too.
 
 If your contribution is host-agnostic prose (skill bodies, agent personas, templates, vault spec), also read [`core/AGENTS.md`](core/AGENTS.md). It defines the boundary between content that belongs under `core/` and content that belongs in a host-specific layer like `plugins/cairn-notes/`.
 
@@ -16,7 +16,7 @@ _While migration into `core/` is in progress, host-agnostic content can land in 
 
 1. **Does it serve the capture / recall / planning core?** Not every useful utility belongs here. A Godot project assistant is useful, but it isn't about capture or planning — it's an example, not a utility.
 2. **Is it Obsidian-aware?** Wikilinks, frontmatter, and the existing vault structure should feel native. If your skill writes raw JSON to a flat file, rethink it.
-3. **Is it free of personal hardcoding?** No specific names, companies, projects, vault paths, or domain-specific jargon (VA.gov, HHS, "my SnowboardTechie brand"). Use placeholders (`{{USER_NAME}}`, `{{NOTES_ROOT}}`, `{{PERSONAL_VAULT}}`) read from `~/.claude/cairn/config.md`.
+3. **Is it free of personal hardcoding?** No specific names, companies, projects, vault paths, or domain-specific jargon (VA.gov, HHS, "my SnowboardTechie brand"). Use placeholders (`{{NOTES_ROOT}}`, `{{PERSONAL_VAULT}}`) read from `~/.claude/cairn/config.md`.
 4. **Would a teammate you've never met find it useful?** If the honest answer is "only people who work exactly like me," it's an example — open a PR to `plugins/cairn-notes/examples/` instead.
 5. **Is it host-agnostic, or genuinely Claude-Code-specific?** Prose-only content (skill bodies, agent personas, templates) belongs eventually under `core/`; anything that calls runtime tools, reads host config paths (`~/.claude/`), or depends on Claude-Code-specific frontmatter stays in `plugins/cairn-notes/`. See [`core/AGENTS.md`](core/AGENTS.md).
 
@@ -32,9 +32,9 @@ Agents use `Glob`, `Grep`, `Read`, `Write`, `Edit`, `Task` directly. Avoid wrapp
 
 Users invoke slash commands (skills); skills delegate to helper spokes via Task when warranted by context-isolation, parallelism, reusability, or specialized persona (see [AGENTS.md "When to add a new spoke"](plugins/cairn-notes/AGENTS.md)). Specialist spokes (scribe, archivist, forge, etc.) include a description line naming the skills that call them and a matching note near the top of the body. If you're adding a new user-facing surface, the default answer is a slash command (skill); a new spoke only makes sense if at least one of the four criteria applies.
 
-### Identity is authoritative
+### Config is authoritative
 
-Every agent that needs `{{USER_NAME}}`, `{{TIMEZONE}}`, `{{NOTES_ROOT}}`, `{{WORKING_HOURS}}`, or `{{COGNITIVE_PEAK}}` reads `~/.claude/cairn/config.md` on startup and substitutes at runtime. Don't hardcode. Degrade gracefully if the file is missing.
+Every agent that needs `{{TIMEZONE}}`, `{{NOTES_ROOT}}`, `{{WORKING_HOURS}}`, or `{{COGNITIVE_PEAK}}` reads `~/.claude/cairn/config.md` on startup and substitutes at runtime. Don't hardcode. Degrade gracefully if the file is missing.
 
 ### Cross-tool portable
 

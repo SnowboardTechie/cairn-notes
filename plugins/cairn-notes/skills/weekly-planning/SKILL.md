@@ -37,7 +37,7 @@ notes_root: ~/notes            # default: ~/notes
 personal_vault: second-brain   # default: second-brain
 ```
 
-Populated by `/cairn-setup`. If the file is missing, fall back to the defaults above — don't block planning on a missing identity.
+Populated by `/cairn-setup`. If the file is missing, fall back to the defaults above — don't block planning on a missing config.
 
 ### `~/.claude/cairn/planning-sources.md` (output folder)
 

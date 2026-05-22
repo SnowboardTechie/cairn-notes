@@ -4,11 +4,11 @@ This file documents the conventions agents follow in the cairn-notes system. It 
 
 ---
 
-## Identity
+## Vault Config
 
-User identity lives at `~/.claude/cairn/config.md` and is populated by the `/cairn-setup` slash command on first use. Agents read this file at invocation to resolve `{{USER_NAME}}`, `{{TIMEZONE}}`, `{{PERSONAL_VAULT}}`, `{{WORKING_HOURS}}`, `{{COGNITIVE_PEAK}}`, and `{{PRONOUNS}}`.
+Vault config lives at `~/.claude/cairn/config.md` and is populated by the `/cairn-setup` slash command on first use. Agents read this file at invocation to resolve `{{TIMEZONE}}`, `{{PERSONAL_VAULT}}`, `{{WORKING_HOURS}}`, and `{{COGNITIVE_PEAK}}`.
 
-**If identity is missing:** the invoked skill (or spoke, when reached directly) tells the user to run `/cairn-setup` and stops. Skills don't bootstrap identity inline — `/cairn-setup` owns that flow.
+**If config is missing:** the invoked skill (or spoke, when reached directly) tells the user to run `/cairn-setup` and stops. Skills don't bootstrap config inline — `/cairn-setup` owns that flow.
 
 Never hard-code user-specific values in agent bodies.
 

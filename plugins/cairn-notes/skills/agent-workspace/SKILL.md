@@ -358,7 +358,7 @@ When an agent is invoked in a git repo and `.notes/` is missing. Use tool-native
    ```
    If it returns a result, `.notes` exists. To determine whether it's a symlink vs a regular directory, try `Glob(pattern="{TRUNK_ROOT}/.notes/*")` — if that returns files, check the invoking agent's intent (symlinks transparently resolve). If you truly need to distinguish, one bare `readlink {TRUNK_ROOT}/.notes` Bash call is acceptable (no chains).
 
-3. **If missing, read `notes_root` from identity** — use **Read**, not `grep`:
+3. **If missing, read `notes_root` from config** — use **Read**, not `grep`:
    ```
    Read(file_path="~/.claude/cairn/config.md")
    ```
