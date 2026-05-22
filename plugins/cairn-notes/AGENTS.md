@@ -153,7 +153,7 @@ These are the moments worth capturing — the point of cairn-notes is low-fricti
 
 Scribe writes immediately on invocation. No previews, no confirmation prompts — the calling skill (e.g., `/capture`) owns any approval gate.
 
-**Scope.** This table covers *vault-note capture* — durable, project-specific knowledge written into Obsidian by `@scribe`. Cross-project user-collaboration preferences (how the user thinks, anchors, decides) route to the harness memory system, not the vault — see `skills/session-review/SKILL.md` for the collaboration-lens flow. Plugin-misbehavior signal (a cairn-notes agent or skill that misbehaved or has a sharp edge worth filing) routes to a GitHub issue against this repo via `/issue-create` — see the same skill for the plugin-improvement-lens flow.
+**Scope.** This table covers *vault-note capture* — durable, project-specific knowledge written into Obsidian by `@scribe`. Plugin-misbehavior signal (a cairn-notes agent or skill that misbehaved or has a sharp edge worth filing) routes to a GitHub issue against this repo via `/issue-create` — see `skills/session-review/SKILL.md` for the plugin-improvement-lens flow.
 
 ---
 
