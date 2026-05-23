@@ -76,7 +76,7 @@ Zero survivors is fine. Better to capture nothing than to grow an archive you ne
 |---------------|-------------|--------|---------|
 | Plugin-improvement candidate | GitHub issue (this repo) | `/issue-create` | "scribe wrote the meeting note to the wrong vault when invoked from a worktree" |
 
-> **Scoping note.** Pointers that name internal infrastructure (private URLs, internal IDs, internal tooling) belong in `.notes/` on the originating project, not in a portable plugin issue.
+> **Scoping note.** Pointers that name internal infrastructure (private URLs, internal IDs, internal tooling) are project-scoped — write them to `.notes/` on the originating project.
 
 ---
 
