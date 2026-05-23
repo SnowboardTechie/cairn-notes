@@ -8,7 +8,7 @@ cairn-notes turns conversations into durable trail markers — *cairns* — that
 - **`/recall`** — search past thinking across project vaults and your personal vault. Type-, date-, or attendee-filtered.
 - **`/plan-workday`** + **`/plan-week`** — pull live context (PRs, issues, planning sources), get 3–5 goals with first steps, write the daily/weekly note.
 - **`/meeting-sync`** — paste meeting notes; get a MEETING anchor plus linked DECISION / TASK / IDEA spin-offs.
-- **`/session-review`** — review a session for vault-worthy insights, harness-memory preferences, and plugin issues to file.
+- **`/session-review`** — review a session for vault-worthy insights and plugin issues to file.
 
 Everything writes Obsidian-native markdown — wikilinks, frontmatter, your existing vault structure.
 
@@ -110,7 +110,7 @@ cairn-notes is **slash commands on top, helper spokes underneath**. You invoke s
 | `/plan-workday` | Daily plan with live PR/issue/source context |
 | `/plan-week` | Weekly plan with Monday-leaning depth flow |
 | `/meeting-sync` | Paste meeting notes → MEETING anchor + spin-offs |
-| `/session-review` | Review a session for vault notes, prefs, plugin issues |
+| `/session-review` | Review a session for vault notes and plugin issues |
 | `/cairn-setup` | First-run vault config setup; re-runnable any time |
 | `/issue-create`, `/issue-work`, `/pr-self-review`, `/ship`, `/dependency-review`, `/dependency-triage`, `/update-pr-description` | Forge/ticket workflows |
 
