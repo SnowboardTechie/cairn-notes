@@ -71,7 +71,7 @@ Draft may contain unfinished work. Delete? (yes/no)
 ```
 🧹 Clean up task working files?
 
-📁 .notes/.agents/issue-work/api-authentication-design/
+📁 .notes/.agents/meeting-sync/quarterly-planning-2026-q2/
    - context.md
    - progress.md
 
@@ -265,14 +265,14 @@ The note has been permanently deleted.
 
 **Clean up completed task:**
 
-Request: `Clean up task "api-authentication-design"`
+Request: `Clean up task "quarterly-planning-2026-q2"`
 
 Response:
 
 ```
 🧹 Clean up task working files?
 
-📁 .notes/.agents/issue-work/api-authentication-design/
+📁 .notes/.agents/meeting-sync/quarterly-planning-2026-q2/
    - context.md (created Jan 25)
    - progress.md (updated Jan 29)
    - threads.md (created Jan 27)
@@ -287,7 +287,7 @@ User: "y"
 Response:
 
 ```
-✓ Cleaned up: .notes/.agents/issue-work/api-authentication-design/
+✓ Cleaned up: .notes/.agents/meeting-sync/quarterly-planning-2026-q2/
   Removed 3 files.
 ```
 
@@ -295,15 +295,15 @@ Response:
 
 **Archive instead of delete:**
 
-Request: `Archive task "api-authentication-design"`
+Request: `Archive task "quarterly-planning-2026-q2"`
 
 Response:
 
 ```
 📦 Archive task working files?
 
-📁 .notes/.agents/issue-work/api-authentication-design/
-   → .notes/.agents/_archive/2026-04-16-api-authentication-design/
+📁 .notes/.agents/meeting-sync/quarterly-planning-2026-q2/
+   → .notes/.agents/_archive/2026-04-16-quarterly-planning-2026-q2/
 
 Archive? (y/n)
 ```
@@ -313,8 +313,8 @@ User: "y"
 Response:
 
 ```
-✓ Archived: api-authentication-design
-  Location: .notes/.agents/_archive/2026-04-16-api-authentication-design/
+✓ Archived: quarterly-planning-2026-q2
+  Location: .notes/.agents/_archive/2026-04-16-quarterly-planning-2026-q2/
 ```
 
 ---

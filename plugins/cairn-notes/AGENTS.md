@@ -34,7 +34,6 @@ cairn-notes is **slash commands on top, helper spokes underneath**. Users invoke
  │  Helper spokes (not user-facing)                                │
  │                                                                 │
  │  scribe    archivist    sage    pyre    forge    kindle    scout│
- │  impl-reviewer    ticket-analyst                                │
  └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -49,8 +48,6 @@ Spokes are **skill-invokable, not user-invokable**. Each spoke's `description:` 
 - **forge** — daily planning (goal-mode by default, blocks/schedules opt-in); invoked by `/plan-workday`, `/plan-week`
 - **kindle** — flow-barrier coaching (anxiety / boredom / distraction); invoked by `/plan-workday` and forge
 - **scout** — developer-forge activity (PR reviews, issues, own PRs, mentions) from GitHub via `gh` or Forgejo via `tea`; invoked by `/plan-workday` and `/plan-week` before forge
-- **impl-reviewer** — single-lens implementation review (correctness / security / simplicity); invoked by `pr-self-review` and `issue-work`
-- **ticket-analyst** — fetches and digests a GitHub/Forgejo issue or PR into a structured context file; invoked by `issue-work`
 
 ### When to add a new spoke (subagent) vs. keep work in a skill
 

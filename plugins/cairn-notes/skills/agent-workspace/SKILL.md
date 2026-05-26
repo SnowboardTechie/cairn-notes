@@ -201,7 +201,7 @@ When a draft or task artifact reaches a "done" state — posted as an issue, pro
 .notes/.agents/_archive/{domain}/{YYYY-MM-DD}-{slug}/             # multi-file work
 ```
 
-- `{domain}` — the skill or workflow that produced the artifact (e.g., `issue-create`, `weekly-planning`, `session-review`). Keeps archives browsable by skill.
+- `{domain}` — the skill or workflow that produced the artifact (e.g., `weekly-planning`, `session-review`). Keeps archives browsable by skill.
 - `{YYYY-MM-DD}` — the date the artifact was posted/promoted, in the user's local timezone. Makes chronological browsing trivial.
 - `{slug}` — the same slug used in the original `drafts/` filename (lowercased title, non-alphanumerics → `-`).
 
@@ -277,7 +277,7 @@ One canonical artifact per archive file. If the draft produced multiple outputs 
 
 ### Calling skills
 
-- Skills that orchestrate long-running tasks (issue-work, planning skills) own their own `.agents/{skill}/` subdir
+- Skills that orchestrate long-running tasks (e.g., planning skills) own their own `.agents/{skill}/` subdir
 - Task lifecycle (start / update progress / complete / cleanup) is the skill's job, not a spoke's — the skill delegates the actual file writes/deletions to scribe and pyre
 
 ---

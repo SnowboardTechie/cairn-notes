@@ -186,19 +186,15 @@ For each approved daily-plan edit from Step 1.6, apply it directly via the Edit 
 
 ### Step 9: Hand off approved plugin-improvement issues
 
-For each approved GitHub-issue draft, invoke `/issue-create` directly with the draft body as the seed:
+For each approved GitHub-issue draft: on approval, post the draft body as a new GitHub/Forgejo issue against the repo named in the `Filing this against …` lead-in. Use whatever issue-creation tool is available (e.g., `/issue-create` if installed; otherwise `gh issue create` directly). **Before posting, show the rendered body and confirm with the user** — this is the second of the two gates.
 
-```
-Skill(skill="cairn-notes:issue-create", args="<draft body>")
-```
+The **draft body** is everything from the line `Filing this against SnowboardTechie/cairn-notes:` through the final `## Open questions` section (or `## Acceptance criteria` if Open questions was dropped) — *not* the `### Proposed GitHub Issue` meta header, the `**Target:** / **Surfaced agent/skill:** / **Trigger moment:**` lines, the horizontal rules, or the trailing italic approval line. The body's default headings (Problem / Proposed behavior / Scope / Implementation hints / Acceptance / Open questions) make it usable verbatim as seed text for an interactive issue-creation tool, or as a finished body for a non-interactive one.
 
-The draft body is everything from the line `Filing this against SnowboardTechie/cairn-notes:` through the final `## Open questions` section (or `## Acceptance criteria` if Open questions was dropped) — *not* the `### Proposed GitHub Issue` meta header, the `**Target:** / **Surfaced agent/skill:** / **Trigger moment:**` lines, the horizontal rules, or the trailing italic approval line. `/issue-create` reads what you pass as the user's initial framing (its Stage 2.1: *"Use the user's initial framing as the seed — if they already answered an area, skip the question"*); the seed's default-structure headings cover Problem / Proposed behavior / Scope / Implementation hints / Acceptance / Open questions, so most of `/issue-create`'s Stage 2 Q&A skips and the user lands on its Stage 3 (Show & iterate) approval gate to confirm the post itself.
+**Caveats for the handoff.** The `Filing this against SnowboardTechie/cairn-notes:` lead-in is a hint, not an override — verify the target repo explicitly at the post-confirmation gate, since the local `origin` may differ when running from a worktree. While reviewing at that gate, also re-read the rendered draft for anything that shouldn't appear in a public issue — the body lifts text verbatim from session content, which can include private URLs, internal identifiers, or content from external documents the user pasted during the session.
 
-**Caveats for the handoff.** The `Filing this against SnowboardTechie/cairn-notes:` lead-in is a hint, not an override. `/issue-create` Stage 1.1 resolves the target repo from `git remote get-url origin` in the *current* directory; if `session-review` is running from a worktree whose origin is a different repo, Stage 1.1's "user's initial message references a different repo than cwd" branch may fire on the lead-in, but verify the target repo explicitly at `/issue-create`'s Stage 3.4 gate regardless — that's where the post target is unambiguous. While reviewing at Stage 3.4, also re-read the rendered draft for anything that shouldn't appear in a public issue — the seed lifts text verbatim from session content, which can include private URLs, internal identifiers, or content from external documents the user pasted during the session.
+Two gates total: this skill's Step 5 catches *"is this worth filing?"*, the post-confirmation gate catches *"is the post correct?"*. If the user approves a draft here but declines at the post-confirmation gate, this skill's job is still done as soon as the handoff fires — whatever the issue-creation tool does with the unposted draft (keep, discard, queue for iteration) is its own concern.
 
-Two gates total: this skill's Step 5 catches *"is this worth filing?"*, `/issue-create`'s Stage 3.4 catches *"is the post correct?"*. If the user approves a draft here but later declines at `/issue-create`'s gate, the draft stays in `/issue-create`'s drafts directory for future iteration — this skill's job is done as soon as the handoff fires.
-
-Declining at this skill's Step 5 drops the candidate entirely; `/issue-create` is never invoked.
+Declining at this skill's Step 5 drops the candidate entirely; no handoff fires.
 
 ---
 
