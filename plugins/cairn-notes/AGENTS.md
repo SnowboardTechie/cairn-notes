@@ -200,6 +200,18 @@ Scribe writes immediately on invocation. No previews, no confirmation prompts �
 
   Default-token least-privilege and ref-level run de-duplication. `docs-lint.yml` conforms; `version-check.yml` predates the rule and is a backfill candidate.
 
+- **Pre-PR check sweep.** Before `git push` on any branch targeting `main`, run the same lint patterns CI runs — failures caught locally save a CI round-trip:
+
+  ```bash
+  # docs-lint — trailing-slash markdown links (zero hits = pass)
+  rg --pcre2 --type md -n '\]\((?!https?://|mailto:|#)[^)]*/\)' .
+
+  # frontmatter-lint — agent + skill frontmatter shape
+  python3 scripts/lint-frontmatter.py
+  ```
+
+  After pushing, watch CI with `gh pr checks <N> --watch=false`. If a job fails with checkout-stage errors (`fatal: could not read Username for 'https://github.com'` or any `actions/checkout` retry loop that aborts before the lint step runs), that's a runner-side flake — rerun with `gh run rerun <run-id> --failed` instead of editing code. If the failing log shows actual lint output (`path/file.md:NN:...`), fix the cited line.
+
 ---
 
 ## Skill Authoring
