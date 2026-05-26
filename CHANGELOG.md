@@ -4,6 +4,9 @@ All notable changes to cairn-notes are documented here. Format follows [Keep a C
 
 ## [Unreleased]
 
+### Deprecated
+- **Project sunset.** cairn-notes is no longer actively maintained as of 2026-05; a sunset notice now heads the README. The author has stepped back from daily use — the capture/recall surface is covered for them by other Claude Code plugins (claude-mem for memory, context-mode for context efficiency, the Obsidian suite for vault work). The repo remains forkable under AGPL-3.0 for anyone who wants the capture-first note model or hub-and-spoke skill architecture as a starting point. Issues and PRs may not be triaged.
+
 ### Removed
 - `dependency-review` and `dependency-triage` skills extracted to the user's personal dotfiles — continuing the engineering-workflow trim from epic [#94](https://github.com/SnowboardTechie/cairn-notes/issues/94) (these were the lowest-coupling extraction: no shared spokes, no cross-skill calls). Neither produced or retrieved a vault artifact, so both failed the capture-first test. **Action for existing users:** the `/dependency-review` and `/dependency-triage` slash commands no longer ship in cairn-notes — install them from your own dotfiles or another plugin if you used them.
 - README cleanup: dropped the now-fully-dead "Forge/ticket workflows" skill-table row (its other five skills were extracted in 0.6.1), plus the `impl-reviewer` and `ticket-analyst` Helper-spokes rows — both agents were removed in 0.6.1 and are superseded in dotfiles by `diff-reviewer` / `ticket-intake`.
