@@ -112,7 +112,6 @@ cairn-notes is **slash commands on top, helper spokes underneath**. You invoke s
 | `/meeting-sync` | Paste meeting notes → MEETING anchor + spin-offs |
 | `/session-review` | Review a session for vault notes and plugin issues |
 | `/cairn-setup` | First-run vault config setup; re-runnable any time |
-| `/issue-create`, `/issue-work`, `/pr-self-review`, `/ship`, `/dependency-review`, `/dependency-triage`, `/update-pr-description` | Forge/ticket workflows |
 
 ### Helper spokes (not user-facing)
 
