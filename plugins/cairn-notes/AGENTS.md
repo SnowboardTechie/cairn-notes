@@ -4,11 +4,11 @@ This file documents the conventions agents follow in the cairn-notes system. It 
 
 ---
 
-## Identity
+## Vault Config
 
-User identity lives at `~/.claude/cairn/identity.md` and is populated by the `/cairn-setup` slash command on first use. Agents read this file at invocation to resolve `{{USER_NAME}}`, `{{TIMEZONE}}`, `{{PERSONAL_VAULT}}`, `{{WORKING_HOURS}}`, `{{COGNITIVE_PEAK}}`, and `{{PRONOUNS}}`.
+Vault config lives at `~/.claude/cairn/config.md` and is populated by the `/cairn-setup` slash command on first use. Agents read this file at invocation to resolve `{{TIMEZONE}}`, `{{PERSONAL_VAULT}}`, `{{WORKING_HOURS}}`, and `{{COGNITIVE_PEAK}}`.
 
-**If identity is missing:** the invoked skill (or spoke, when reached directly) tells the user to run `/cairn-setup` and stops. Skills don't bootstrap identity inline — `/cairn-setup` owns that flow.
+**If config is missing:** the invoked skill (or spoke, when reached directly) tells the user to run `/cairn-setup` and stops. Skills don't bootstrap config inline — `/cairn-setup` owns that flow.
 
 Never hard-code user-specific values in agent bodies.
 
@@ -153,7 +153,7 @@ These are the moments worth capturing — the point of cairn-notes is low-fricti
 
 Scribe writes immediately on invocation. No previews, no confirmation prompts — the calling skill (e.g., `/capture`) owns any approval gate.
 
-**Scope.** This table covers *vault-note capture* — durable, project-specific knowledge written into Obsidian by `@scribe`. Cross-project user-collaboration preferences (how the user thinks, anchors, decides) route to the harness memory system, not the vault — see `skills/session-review/SKILL.md` for the collaboration-lens flow. Plugin-misbehavior signal (a cairn-notes agent or skill that misbehaved or has a sharp edge worth filing) routes to a GitHub issue against this repo via `/issue-create` — see the same skill for the plugin-improvement-lens flow.
+**Scope.** This table covers *vault-note capture* — durable, project-specific knowledge written into Obsidian by `@scribe`. Plugin-misbehavior signal (a cairn-notes agent or skill that misbehaved or has a sharp edge worth filing) routes to a GitHub issue against this repo via `/issue-create` — see `skills/session-review/SKILL.md` for the plugin-improvement-lens flow.
 
 ---
 
@@ -200,6 +200,18 @@ Scribe writes immediately on invocation. No previews, no confirmation prompts �
 
   Default-token least-privilege and ref-level run de-duplication. `docs-lint.yml` conforms; `version-check.yml` predates the rule and is a backfill candidate.
 
+- **Pre-PR check sweep.** Before `git push` on any branch targeting `main`, run the same lint patterns CI runs — failures caught locally save a CI round-trip:
+
+  ```bash
+  # docs-lint — trailing-slash markdown links (zero hits = pass)
+  rg --pcre2 --type md -n '\]\((?!https?://|mailto:|#)[^)]*/\)' .
+
+  # frontmatter-lint — agent + skill frontmatter shape
+  python3 scripts/lint-frontmatter.py
+  ```
+
+  After pushing, watch CI with `gh pr checks <N> --watch=false`. If a job fails with checkout-stage errors (`fatal: could not read Username for 'https://github.com'` or any `actions/checkout` retry loop that aborts before the lint step runs), that's a runner-side flake — rerun with `gh run rerun <run-id> --failed` instead of editing code. If the failing log shows actual lint output (`path/file.md:NN:...`), fix the cited line.
+
 ---
 
 ## Skill Authoring
@@ -224,7 +236,7 @@ Three storage surfaces. The decision rule is: "does this vary by user?" → `~/.
 
 | Surface | Varies by | Examples |
 |---|---|---|
-| `~/.claude/cairn/*.md` | User (name, vault path, working hours, source lists) | `identity.md` (via `/cairn-setup`), `planning-sources.md` (via `/plan-workday`) |
+| `~/.claude/cairn/*.md` | User (vault path, working hours, source lists) | `config.md` (via `/cairn-setup`), `planning-sources.md` (via `/plan-workday`) |
 | `.notes/.agents/{skill}/` | Project (per-repo caches, drafts, session context) | `.notes/.agents/drafts/`, `.notes/.agents/issue-create/type-ids.md` |
 | Plugin body (`SKILL.md`, `references/`) | Neither — ships with the plugin | Static instruction text, example templates |
 

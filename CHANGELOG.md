@@ -4,7 +4,15 @@ All notable changes to cairn-notes are documented here. Format follows [Keep a C
 
 ## [Unreleased]
 
-_No unreleased changes._
+### Added
+- `plugins/cairn-notes/AGENTS.md` Git & Commits section gains a **Pre-PR check sweep** bullet — names the two lint patterns CI runs (docs-lint trailing-slash regex; `scripts/lint-frontmatter.py`), tells agents to run them before `git push`, and documents the `actions/checkout` flake symptom + the `gh run rerun --failed` resolution so a transient infra failure doesn't get mistaken for a code defect.
+
+### Changed
+- `~/.claude/cairn/identity.md` renamed to `~/.claude/cairn/config.md`; `/cairn-setup` reframed from "identity / onboarding" to vault config. The file's purpose is now narrowly the bag of values planning skills must read deterministically (`notes_root`, `personal_vault`, `timezone`, `working_hours`, `cognitive_peak`) — user-profile data delegates to Claude Code's auto-memory. **Action for existing users:** re-run `/cairn-setup` to migrate the file (no automatic rename). Resolves [#96](https://github.com/SnowboardTechie/cairn-notes/issues/96).
+
+### Removed
+- `name` and `pronouns` fields dropped from the cairn-notes config. `name` was read by `forge` and `kindle` only for optional address (no current output greets by name); `pronouns` was fully inert — collected by `/cairn-setup`, documented as "optional; for natural conversational style," but never substituted into any agent or skill output. Both belong to Claude Code's auto-memory now. `{{USER_NAME}}` and `{{PRONOUNS}}` no longer appear in `AGENTS.md`'s declared template-var list; kindle's Startup Check section is removed (its only purpose was reading `{{USER_NAME}}`). Part of [#96](https://github.com/SnowboardTechie/cairn-notes/issues/96).
+- `session-review`'s collaboration lens and harness-memory routes removed. Cross-project user-collaboration preferences are Claude Code's auto-memory territory — `session-review` shouldn't generate recommendations for a destination it doesn't own. Step 1 now scans with two lenses (technical + plugin-improvement) instead of three; the Memory-routes table, the `Memory recommendation` template, the harness-memory Q2 destination bullet, Step 2's Harness memory dedup sub-step, the old Step 9 handoff, and the "do not write to harness memory" guardrail were all removed. The skill is now exclusively a router for vault notes and plugin issues. Originally scoped as a sibling issue under [#96](https://github.com/SnowboardTechie/cairn-notes/issues/96); absorbed into the same PR rather than filed separately.
 
 ## [0.6.0] — 2026-05-20
 

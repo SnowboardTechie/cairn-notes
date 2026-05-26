@@ -8,11 +8,11 @@ cairn-notes turns conversations into durable trail markers — *cairns* — that
 - **`/recall`** — search past thinking across project vaults and your personal vault. Type-, date-, or attendee-filtered.
 - **`/plan-workday`** + **`/plan-week`** — pull live context (PRs, issues, planning sources), get 3–5 goals with first steps, write the daily/weekly note.
 - **`/meeting-sync`** — paste meeting notes; get a MEETING anchor plus linked DECISION / TASK / IDEA spin-offs.
-- **`/session-review`** — review a session for vault-worthy insights, harness-memory preferences, and plugin issues to file.
+- **`/session-review`** — review a session for vault-worthy insights and plugin issues to file.
 
 Everything writes Obsidian-native markdown — wikilinks, frontmatter, your existing vault structure.
 
-> **Extending or contributing?** Read [`plugins/cairn-notes/AGENTS.md`](plugins/cairn-notes/AGENTS.md) — it's the framework spec (identity, vault routing, worktree resolution, skill-and-spoke conventions, cross-tool portability) and the single source of truth for writing or porting skills and spokes.
+> **Extending or contributing?** Read [`plugins/cairn-notes/AGENTS.md`](plugins/cairn-notes/AGENTS.md) — it's the framework spec (vault config, vault routing, worktree resolution, skill-and-spoke conventions, cross-tool portability) and the single source of truth for writing or porting skills and spokes.
 
 ---
 
@@ -37,7 +37,7 @@ Then run setup:
 /cairn-setup
 ```
 
-`/cairn-setup` walks you through identity (~2 minutes) — it scans your existing Claude Code memory for clues (name, timezone, vault path), asks 5–7 quick questions to fill in what's missing, and writes `~/.claude/cairn/identity.md`. Re-runnable any time.
+`/cairn-setup` walks you through vault config (~2 minutes) — it scans your existing Claude Code memory for clues (timezone, vault path), asks 4–5 quick questions to fill in what's missing, and writes `~/.claude/cairn/config.md`. Re-runnable any time.
 
 ---
 
@@ -110,8 +110,8 @@ cairn-notes is **slash commands on top, helper spokes underneath**. You invoke s
 | `/plan-workday` | Daily plan with live PR/issue/source context |
 | `/plan-week` | Weekly plan with Monday-leaning depth flow |
 | `/meeting-sync` | Paste meeting notes → MEETING anchor + spin-offs |
-| `/session-review` | Review a session for vault notes, prefs, plugin issues |
-| `/cairn-setup` | First-run identity setup; re-runnable any time |
+| `/session-review` | Review a session for vault notes and plugin issues |
+| `/cairn-setup` | First-run vault config setup; re-runnable any time |
 | `/issue-create`, `/issue-work`, `/pr-self-review`, `/ship`, `/dependency-review`, `/dependency-triage`, `/update-pr-description` | Forge/ticket workflows |
 
 ### Helper spokes (not user-facing)
@@ -163,11 +163,11 @@ The framework conventions live in [`plugins/cairn-notes/AGENTS.md`](plugins/cair
 
 ## Troubleshooting
 
-**"`/capture` says it can't find my identity"**
-Identity lives at `~/.claude/cairn/identity.md`. Run `/cairn-setup` to create or update it. Re-running is safe — it pre-fills from the existing file.
+**"`/capture` says it can't find my config"**
+Config lives at `~/.claude/cairn/config.md`. Run `/cairn-setup` to create or update it. Re-running is safe — it pre-fills from the existing file.
 
 **"I want to change my vault location"**
-Edit `personal_vault` (or `notes_root`) in `~/.claude/cairn/identity.md`. The next invocation picks up the change.
+Edit `personal_vault` (or `notes_root`) in `~/.claude/cairn/config.md`. The next invocation picks up the change.
 
 **"Scribe keeps writing to `~/notes/second-brain/` when I'm inside a repo"**
 That means the `.notes/` symlink in your repo isn't set up. Start a fresh session inside the repo and run `/capture` once — scribe creates `.notes/` → `~/notes/{repo-name}/` and adds it to `.gitignore` on first capture.
@@ -176,7 +176,7 @@ That means the `.notes/` symlink in your repo isn't set up. Start a fresh sessio
 Sage prefers MCPs in order: Exa → Context7 → grep.app → built-in WebSearch. Check that the MCP is listed in `claude mcp list` and authenticated. If you installed Exa after sage first ran, restart the Claude Code session.
 
 **"Permissions keep prompting when skills read my notes"**
-Run `/cairn-setup`. Phase 5 offers to configure `permissions.defaultMode: "auto"` in `~/.claude/settings.json` with a resolved, absolute allowlist covering your notes, identity file, and the Bash shapes the spokes use. You'll see the exact config before it's written. If you prefer manual control, skip Phase 5 and approve-and-remember each path on first prompt instead.
+Run `/cairn-setup`. Phase 5 offers to configure `permissions.defaultMode: "auto"` in `~/.claude/settings.json` with a resolved, absolute allowlist covering your notes, config file, and the Bash shapes the spokes use. You'll see the exact config before it's written. If you prefer manual control, skip Phase 5 and approve-and-remember each path on first prompt instead.
 
 **"I'm in a git worktree and notes aren't showing up"**
 `.notes/` lives in the **trunk** (main worktree) so it's shared across every branch worktree. Agent-workspace resolves the trunk root automatically via `git rev-parse`. If something still looks off, `ls -la .notes` in the trunk to confirm the symlink.

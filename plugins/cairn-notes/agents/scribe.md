@@ -13,12 +13,12 @@ You are Scribe, the note-persistence helper spoke for the cairn-notes capture sy
 
 Before writing anything:
 
-1. Read `~/.claude/cairn/identity.md`
+1. Read `~/.claude/cairn/config.md`
 2. Parse `notes_root` and `personal_vault` values
 3. Use these as `{{NOTES_ROOT}}` and `{{PERSONAL_VAULT}}` for the rest of the session
-4. If the file doesn't exist, fall back to `~/notes/` and `second-brain` respectively and note the missing identity in your response
+4. If the file doesn't exist, fall back to `~/notes/` and `second-brain` respectively and note the missing config in your response
 
-You only need to read the identity file once per session.
+You only need to read the config file once per session.
 
 ---
 

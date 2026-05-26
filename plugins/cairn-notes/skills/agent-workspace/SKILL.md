@@ -358,9 +358,9 @@ When an agent is invoked in a git repo and `.notes/` is missing. Use tool-native
    ```
    If it returns a result, `.notes` exists. To determine whether it's a symlink vs a regular directory, try `Glob(pattern="{TRUNK_ROOT}/.notes/*")` — if that returns files, check the invoking agent's intent (symlinks transparently resolve). If you truly need to distinguish, one bare `readlink {TRUNK_ROOT}/.notes` Bash call is acceptable (no chains).
 
-3. **If missing, read `notes_root` from identity** — use **Read**, not `grep`:
+3. **If missing, read `notes_root` from config** — use **Read**, not `grep`:
    ```
-   Read(file_path="~/.claude/cairn/identity.md")
+   Read(file_path="~/.claude/cairn/config.md")
    ```
    Parse the `notes_root:` field in your response; expand `~` to `$HOME`.
 
@@ -414,8 +414,8 @@ If the notes target directory (e.g., `~/notes/{project}/`) doesn't have `.agents
 When writing to the personal vault (`{NOTES_ROOT}/{PERSONAL_VAULT}/`) and it doesn't exist:
 
 ```bash
-NOTES_ROOT=$(grep '^notes_root:' ~/.claude/cairn/identity.md | cut -d: -f2- | xargs)
-PERSONAL_VAULT=$(grep '^personal_vault:' ~/.claude/cairn/identity.md | cut -d: -f2- | xargs)
+NOTES_ROOT=$(grep '^notes_root:' ~/.claude/cairn/config.md | cut -d: -f2- | xargs)
+PERSONAL_VAULT=$(grep '^personal_vault:' ~/.claude/cairn/config.md | cut -d: -f2- | xargs)
 NOTES_ROOT="${NOTES_ROOT/#\~/$HOME}"
 
 mkdir -p "${NOTES_ROOT}/${PERSONAL_VAULT}"

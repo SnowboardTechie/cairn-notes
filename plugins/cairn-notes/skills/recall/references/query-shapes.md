@@ -9,7 +9,7 @@ Loaded by [`/recall`](../SKILL.md) Step 3 when composing the archivist prompt. T
 | Flag | Resolves to | Archivist directive |
 |---|---|---|
 | `scope:project` | current repo's trunk `.notes/` | omit `vault:` line (archivist default) |
-| `scope:personal` | `~/notes/{{PERSONAL_VAULT}}/` from `~/.claude/cairn/identity.md` | `vault: personal` |
+| `scope:personal` | `~/notes/{{PERSONAL_VAULT}}/` from `~/.claude/cairn/config.md` | `vault: personal` |
 | `scope:both` | both | two parallel calls — one with `vault: project` (or omitted), one with `vault: personal` |
 
 If `scope:` is absent, the default depends on `cwd` (see [SKILL.md Step 2](../SKILL.md#step-2-resolve-scope)).

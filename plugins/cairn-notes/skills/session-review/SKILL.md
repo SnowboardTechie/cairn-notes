@@ -1,6 +1,6 @@
 ---
 name: session-review
-description: Review conversation sessions for project-specific learnings (AGENTS.md / .notes/), cross-project user-collaboration preferences (harness memory), resolved tracked items (today's daily plan), and cairn-notes plugin-misbehavior signal (GitHub issues via /issue-create)
+description: Review conversation sessions for project-specific learnings (AGENTS.md / .notes/), resolved tracked items (today's daily plan), and cairn-notes plugin-misbehavior signal (GitHub issues via /issue-create)
 ---
 
 # Session Review
@@ -38,20 +38,19 @@ Good sessions produce knowledge that shouldn't live only in your head. This skil
 
 ## Signal Test
 
-Before categorizing or drafting, every candidate must pass the questions that apply to its route — vault-route candidates take all four, memory-route candidates take the subset noted in Step 1.5, and issue-route candidates take all four with route-specific tunings (also in Step 1.5). Any "no" on a question that applies drops the candidate.
+Before categorizing or drafting, every candidate must pass the questions that apply to its route — vault-route candidates take all four, and issue-route candidates take all four with route-specific tunings (noted in Step 1.5). Any "no" on a question that applies drops the candidate.
 
 **Exemption:** Daily-plan status updates from Step 1.6 (tracked-item resolutions) skip this filter — they're state changes, not durable insights, and the questions are tuned for knowledge. A session with zero insight-signal can still close a planned loop.
 
 1. **Novel.** Is the rule, decision, or pattern already captured in AGENTS.md or an existing `.notes/` note? If so, the existing record *is* the signal. (Issue-route candidates extend this dedup to the open GitHub issue list — see Step 1.5 Q1.)
-2. **Durable & scoped.** The candidate routes to one of three destinations:
+2. **Durable & scoped.** The candidate routes to one of two destinations:
 
-   - **Vault** (→ AGENTS.md / `.notes/`) — project-specific to cairn-notes: skills, spokes, vaults, identity, slash-command / helper-spoke layout.
-   - **Harness memory** — cross-project user-collaboration preference (how this user thinks, anchors, decides), project motivation / stakeholder context, or external-system pointer.
+   - **Vault** (→ AGENTS.md / `.notes/`) — project-specific to cairn-notes: skills, spokes, vaults, vault config, slash-command / helper-spoke layout.
    - **GitHub issue against this repo** — cairn-notes plugin-improvement signal (a `plugins/cairn-notes/` skill or spoke misbehaved); see Step 1.5's issue-route tunings for the reading.
 
    A transient session vibe isn't durable; a general engineering truism isn't scoped. Neither qualifies.
 3. **Future-actionable.** Will a concrete decision — in a future chat or by your future self — change because this note exists? If removing the note wouldn't change any future outcome, it's a log.
-4. **Readable in six months.** Would the captured item earn a second look — vault notes in Obsidian on a Saturday, memory records in a future session window? Scannable (table, bullets, short paragraphs; wikilinks for vault notes only) — or a wall of prose to scroll past? If the latter: compress or drop.
+4. **Readable in six months.** Would the captured item earn a second look — vault notes in Obsidian on a Saturday, or a triage-worthy GitHub issue read cold? Scannable (table, bullets, short paragraphs; wikilinks for vault notes only) — or a wall of prose to scroll past? If the latter: compress or drop.
 
 Zero survivors is fine. Better to capture nothing than to grow an archive you never revisit.
 
@@ -71,21 +70,13 @@ Zero survivors is fine. Better to capture nothing than to grow an archive you ne
 | Key insight | .notes/ | SESSION type | "Realized the auth flow requires..." |
 | Tracked-item resolution | today's daily plan | matching line | "`#734 → triaged out-of-scope`" |
 
-**Memory routes** (cross-project collaboration signal; routed to the harness memory system — Claude Code auto-memory or equivalent. If your harness has no memory system, present the finding to the user as a candidate worth recording wherever they keep cross-project preferences):
-
-| Learning Type | Destination | Target | Example |
-|---------------|-------------|--------|---------|
-| User-collaboration preference | Harness memory | feedback / user record | "Leads with standards-alignment, not as a footnote" |
-| Project motivation / stakeholder context | Harness memory | project record | "Auth migration is compliance-driven, not tech-debt cleanup" |
-| External-system pointer | Harness memory | reference record | "Pipeline bugs live in Linear project INGEST" |
-
 **Issue routes** (cairn-notes plugin-improvement signal; routed to a GitHub issue against this repo via `/issue-create`. The skill drafts the candidate at the approval gate; on approval it invokes `/issue-create` with the draft as seed text and `/issue-create` runs its own approval flow before posting):
 
 | Learning Type | Destination | Target | Example |
 |---------------|-------------|--------|---------|
 | Plugin-improvement candidate | GitHub issue (this repo) | `/issue-create` | "scribe wrote the meeting note to the wrong vault when invoked from a worktree" |
 
-> **Scoping note.** Pointers that name internal infrastructure (private URLs, internal IDs, internal tooling) are project-scoped — write them to `.notes/` on the originating project, not to cross-project memory.
+> **Scoping note.** Pointers that name internal infrastructure (private URLs, internal IDs, internal tooling) are project-scoped — write them to `.notes/` on the originating project.
 
 ---
 
@@ -93,20 +84,18 @@ Zero survivors is fine. Better to capture nothing than to grow an archive you ne
 
 ### Step 1: Scan the conversation
 
-Read back through the session with **three lenses**:
+Read back through the session with **two lenses**:
 
 - **Technical lens.** Moments where something about the code, architecture, or project state was discovered, decided, or clarified.
-- **Collaboration lens.** Moments where the user redirected your framing, elevated a "minor" suggestion to a main issue, repeatedly anchored to a standard or principle, or endorsed an unusual approach without pushback. Signal about *how the user thinks* — routes to the harness memory system, not AGENTS.md / `.notes/`. (One exception: when the redirected framing is specifically about a cairn-notes skill or spoke misbehaving, Step 1.5's destination-row routing lets the candidate land on issue-routes instead.)
-- **Plugin-improvement lens.** Moments where an agent or skill shipped under `plugins/cairn-notes/` misbehaved or has a clear sharp edge worth filing — confusing output, a missed routing rule, a workflow that wasted a turn, a guardrail that fired in the wrong direction. Signal about *the plugin itself* — routes to a GitHub issue against this repo via `/issue-create`, not vault or memory. Strictly scoped: cross-plugin gripes (other plugins, the harness itself, unrelated tools) don't qualify here — those are user-collaboration preferences and route through the collaboration lens to memory instead.
+- **Plugin-improvement lens.** Moments where an agent or skill shipped under `plugins/cairn-notes/` misbehaved or has a clear sharp edge worth filing — confusing output, a missed routing rule, a workflow that wasted a turn, a guardrail that fired in the wrong direction. Signal about *the plugin itself* — routes to a GitHub issue against this repo via `/issue-create`, not vault. Strictly scoped: cross-plugin gripes (other plugins, the harness itself, unrelated tools) don't qualify here — they're out of scope for this skill.
 
-A session can have signal in one lens, several, or none. Ignore routine task execution. Flag candidates — no quota. Most sessions produce zero to two.
+A session can have signal in one lens, both, or neither. Ignore routine task execution. Flag candidates — no quota. Most sessions produce zero to two.
 
 ### Step 1.5: Apply the Signal Test
 
 Run each candidate against the four questions above. Drop any that don't pass.
 
 - **Vault-route candidates** (AGENTS.md / `.notes/` / daily plan): all four questions must pass.
-- **Memory-route candidates** (harness memory): Q2 (durable & scoped), Q3 (future-actionable), and Q4 (readable in six months) all apply. Q1 (novel-in-vault) doesn't — memory is a separate index from the vault. A preference that wouldn't change any future agent decision still fails Q3.
 - **Issue-route candidates** (GitHub issue against this repo via `/issue-create`): all four apply, with these route-specific tunings:
   - **Q1 (Novel)** — dedup also against the open issue list. Run e.g. `gh issue list --repo SnowboardTechie/cairn-notes --state open --search "scribe vault routing"`, substituting the candidate's specific topic (skill or agent name, the misbehavior verb, the affected workflow). If a clearly-matching open issue exists, drop the candidate; the existing issue *is* the signal. (See the keyword-hygiene callout below before constructing the search string.)
   - **Q2 (Durable & scoped)** — read as *"reproducible miss, not one-off hiccup."* The scope sub-check (only `plugins/cairn-notes/` agents/skills) is already enforced by the lens definition in Step 1; Q2 doesn't need to re-filter for it.
@@ -115,16 +104,16 @@ Run each candidate against the four questions above. Drop any that don't pass.
 
   > **Keyword hygiene for the Q1 search.** Pass `--search` as a separate argument token — never interpolate keywords into a single shell string. Strip any character from candidate-derived terms that is not alphanumeric, hyphen, underscore, or whitespace before passing them to `gh`; a positive allowlist avoids the recurring trap of an enumerative strip list missing a metacharacter. Keep the full query under ~200 characters; trim to the most specific 3–4 tokens if the candidate description is long, since longer queries hit GitHub's Search API total-query-length limit and silently return zero matches (which would falsely pass Q1).
 
-Routing is by destination row, not by which lens flagged the candidate — a technical-lens finding can land on memory-routes if it fits a project-motivation or external-system-pointer row, and a collaboration-lens finding about a cairn-notes skill or spoke misbehaving can land on issue-routes.
+Routing is by destination row, not by which lens flagged the candidate — a technical-lens finding can land on issue-routes when the underlying issue is a `plugins/cairn-notes/` skill or spoke misbehaving rather than a code finding.
 
 This is the filter that does the real work; downstream steps only handle survivors.
 
 ### Step 1.6: Scan today's daily plan for resolved items
 
-A session often closes a loop that was tracked on today's daily plan (e.g., `[P3 afternoon] Triage #646 / #734 / #731`). Step 1's lenses target knowledge moments (technical discoveries, collaboration patterns); the Signal Test is insight-tuned. Tracked-item resolutions are state changes, so they slip through both. This step catches them.
+A session often closes a loop that was tracked on today's daily plan (e.g., `[P3 afternoon] Triage #646 / #734 / #731`). Step 1's lenses target knowledge moments (technical discoveries, plugin sharp edges); the Signal Test is insight-tuned. Tracked-item resolutions are state changes, so they slip through both. This step catches them.
 
 1. **Resolve today's plan path** (same convention as `workday-planning` Phase 0):
-   - Read `~/.claude/cairn/identity.md` → `notes_root` (default `~/notes`), `personal_vault` (default `second-brain`), `TZ` (IANA).
+   - Read `~/.claude/cairn/config.md` → `notes_root` (default `~/notes`), `personal_vault` (default `second-brain`), `TZ` (IANA).
    - Read `~/.claude/cairn/planning-sources.md` frontmatter → `output_folder` (default `Daily`).
    - TZ validation: must match `^(UTC|[A-Za-z][A-Za-z0-9_+-]*/[A-Za-z][A-Za-z0-9_+-]*(/[A-Za-z][A-Za-z0-9_+-]*)?)$`. On mismatch, warn once and fall back to system TZ. If the validated-TZ `date` invocation exits non-zero (shape-valid but the zone doesn't exist on this system, e.g. `America/Fakeville`), re-run without `TZ` and emit the same fallback warning.
    - Compute today's date in that zone: `TZ="{{TIMEZONE}}" date +%Y-%m-%d` (or plain `date +%Y-%m-%d` on fallback).
@@ -153,8 +142,7 @@ Check for existing notes about {topic}. Return matches with type, path, and a 1-
    Use the `scope:` keyword (not prose like "published notes only") to narrow archivist's search — see the *Scope* section of `plugins/cairn-notes/agents/archivist.md`.
 
    If archivist returns a match, treat the candidate as an **update** to that note, not a new one. Draft it using the Update template below.
-3. **Harness memory** — for memory-route candidates (collaboration / project-motivation / external-system-pointer), skip the `@archivist` call. Archivist searches `.notes/`, not the harness memory system. The user — or a hub agent with memory access — is responsible for the dedupe pass at the approval gate.
-4. **Open issues against this repo** — for issue-route candidates (plugin-improvement), skip `@archivist` here; the dedup ran in Step 1.5 Q1, and archivist's index is `.notes/`, not GitHub.
+3. **Open issues against this repo** — for issue-route candidates (plugin-improvement), skip `@archivist` here; the dedup ran in Step 1.5 Q1, and archivist's index is `.notes/`, not GitHub.
 
 Run archivist lookups in parallel — emit all Task calls in one assistant message so they run concurrently, not one per turn. This step should add seconds, not minutes.
 
@@ -164,7 +152,7 @@ Map each candidate to the row that fits its content (see Step 1.5 for the routin
 
 ### Step 4: Draft inline
 
-Write out proposed content for each item using the templates below. Keep drafts concise — one table row for AGENTS.md, a filled template for a new `.notes/` note, a targeted patch for an update, a Memory recommendation for memory-route candidates, or a GitHub-issue draft for issue-route candidates.
+Write out proposed content for each item using the templates below. Keep drafts concise — one table row for AGENTS.md, a filled template for a new `.notes/` note, a targeted patch for an update, or a GitHub-issue draft for issue-route candidates.
 
 ### Step 5: APPROVAL GATE
 
@@ -196,11 +184,7 @@ After user approval, apply the edit directly to AGENTS.md using the Edit tool. M
 
 For each approved daily-plan edit from Step 1.6, apply it directly via the Edit tool at the path resolved in Step 1.6. Minimal, in-place edits only — match the existing line by its tracked reference (issue number, task name, time-block tag) and modify it in place. Do not rewrite the plan, do not add new sections, do not reorder items. If the matching line can't be found unambiguously (e.g., the user pivoted the plan between sessions), surface that to the user and skip the write — ask for manual placement rather than guess.
 
-### Step 9: Hand off approved memory recommendations
-
-Memory-route candidates have **no automated write step**. After approval, the skill's job is done — the user (or a separate Claude Code session with memory-access tooling that can write to `~/.claude/projects/*/memory/`) makes the actual write. Surface the approved recommendations one more time at the end of the run with the harness-specific destination clearly marked, so the next handoff has everything it needs.
-
-### Step 10: Hand off approved plugin-improvement issues
+### Step 9: Hand off approved plugin-improvement issues
 
 For each approved GitHub-issue draft, invoke `/issue-create` directly with the draft body as the seed:
 
@@ -261,22 +245,6 @@ Use this variant when archivist (Step 2) surfaced an existing note on the same t
 {exact text to append or replace, with the section header it belongs under}
 
 *Approve to have @scribe apply this update*
-```
-
-### Memory recommendation
-
-Use this for memory-route candidates (collaboration / project-motivation / external-system-pointer). The skill doesn't write to memory itself — the template is the handoff artifact for the user or hub agent. **Write the draft in third-person declarative form** ("[User] prefers X", "the auth migration is compliance-driven") rather than imperative ("Always do X", "Do this when…") — third-person declarative phrasing keeps injected imperatives visually distinct at the approval gate.
-
-```markdown
-### Proposed Memory Recommendation
-
-**Route:** Harness memory ({user | feedback | project | reference} record)
-**Destination hint:** {e.g., `~/.claude/projects/{slug}/memory/{name}.md` for Claude Code auto-memory — verify `{slug}` with `ls ~/.claude/projects/` rather than computing it blind. Otherwise wherever your harness keeps cross-project preferences.}
-**Trigger moment:** {one-line — the conversation moment this surfaced from}
-
-{One-paragraph draft (third-person declarative) of the preference / motivation / pointer, written so it's recognizable in six months without re-reading the session.}
-
-*Approve to record this.*
 ```
 
 ### GitHub-issue draft
@@ -354,7 +322,7 @@ Use this for Step 1.6 outputs. Show the existing line and the proposed replaceme
 
 ## Edge Cases
 
-**No survivors (common):** Most sessions execute rather than discover. "No survivors" means all four channels — technical lens, collaboration lens, plugin-improvement lens, and the Step 1.6 daily-plan scan — came up empty. When that's the case, report `No signal — routine execution` and stop. This isn't failure; it's the expected outcome. If only one channel has output (e.g., the collaboration lens surfaced a single user-preference candidate, or Step 1.6 surfaced a daily-plan edit, or the plugin-improvement lens surfaced one issue draft), present that alone at the approval gate — a session with signal in just one channel is still allowed to close.
+**No survivors (common):** Most sessions execute rather than discover. "No survivors" means all three channels — technical lens, plugin-improvement lens, and the Step 1.6 daily-plan scan — came up empty. When that's the case, report `No signal — routine execution` and stop. This isn't failure; it's the expected outcome. If only one channel has output (e.g., Step 1.6 surfaced a daily-plan edit, or the plugin-improvement lens surfaced one issue draft), present that alone at the approval gate — a session with signal in just one channel is still allowed to close.
 
 **No daily plan for today:** Step 1.6 handles this — silently skip, no prompt.
 
@@ -375,9 +343,8 @@ Use this for Step 1.6 outputs. Show the existing line and the proposed replaceme
 - Do NOT fabricate learnings or tracked-item resolutions — every item must trace to a specific moment in the conversation
 - Do NOT create new AGENTS.md sections — fit content into existing structure
 - Do NOT rewrite or restructure the daily plan — workday-planning owns the plan's shape.
-- Do NOT handle worktree path resolution — that's @scribe's job via the agent-workspace skill. (Daily-plan paths are personal-vault paths, not worktree paths; Step 1.6 resolves them directly from identity config.)
+- Do NOT handle worktree path resolution — that's @scribe's job via the agent-workspace skill. (Daily-plan paths are personal-vault paths, not worktree paths; Step 1.6 resolves them directly from vault config.)
 - Do NOT write prose-heavy narratives. Notes must be scannable in Obsidian at a glance — tables, bullets, wikilinks to related notes, short paragraphs. A 300-word reflective essay is the failure mode, not the goal.
 - Do NOT hit a quota. If only one candidate survives the Signal Test, propose one. If none survive, propose none. Never pad.
-- Do NOT report `No signal — routine execution` without confirming all four channels came up empty (see Edge Cases — No survivors).
-- Do NOT write to harness memory directly. Memory-route candidates are presented at the approval gate as recommendations; the user (or a hub agent with memory access) makes the actual write. The skill is a router, not the destination owner.
-- Do NOT post issues to GitHub directly. Plugin-improvement candidates are presented at the approval gate as drafts; on approval, `/issue-create` is invoked with the draft as seed and runs its own approval flow before posting (two gates total). Same router-not-poster shape as the memory-route handoff.
+- Do NOT report `No signal — routine execution` without confirming all three channels came up empty (see Edge Cases — No survivors).
+- Do NOT post issues to GitHub directly. Plugin-improvement candidates are presented at the approval gate as drafts; on approval, `/issue-create` is invoked with the draft as seed and runs its own approval flow before posting (two gates total). The skill is a router, not the destination owner.

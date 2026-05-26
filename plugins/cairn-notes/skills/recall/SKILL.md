@@ -81,7 +81,7 @@ Glob(pattern="{trunk_root}/.notes")  # confirm vault symlink for project mode
 The three modes:
 
 - **Project mode** — the `git rev-parse` call returns a `/.git` path (cwd is inside a git repo, possibly a worktree); the Glob confirms `.notes/` exists at the trunk → default `scope:project`.
-- **Direct vault mode** — the `git rev-parse` call fails (cwd is not in a repo) **and** cwd's absolute path is inside `{notes_root}/` for `notes_root` parsed from `~/.claude/cairn/identity.md` → extract the immediate vault directory from cwd by stripping the absolute `notes_root` prefix and taking the first remaining path segment. **Reject the extraction** if the segment contains `..`, a `/`, or is empty — fall back to Default mode and log the anomaly. Otherwise default `scope:<absolute-path>` where `<absolute-path>` = `{notes_root}/<segment>`.
+- **Direct vault mode** — the `git rev-parse` call fails (cwd is not in a repo) **and** cwd's absolute path is inside `{notes_root}/` for `notes_root` parsed from `~/.claude/cairn/config.md` → extract the immediate vault directory from cwd by stripping the absolute `notes_root` prefix and taking the first remaining path segment. **Reject the extraction** if the segment contains `..`, a `/`, or is empty — fall back to Default mode and log the anomaly. Otherwise default `scope:<absolute-path>` where `<absolute-path>` = `{notes_root}/<segment>`.
 - **Default mode** — neither of the above → default `scope:personal`.
 
 The flag overrides the default. Resolved scopes:
@@ -90,7 +90,7 @@ The flag overrides the default. Resolved scopes:
 |---|---|
 | `project` | One call with `vault: project` (or no `vault:` line — same effect) |
 | `personal` | One call with `vault: personal` |
-| `<absolute-path>` (Direct vault default only — not user-facing as a flag in v0.6.0) | One call with `vault: <absolute-path>` (skips the identity-file lookup; behavior matches `vault: personal` when the path resolves to the personal vault) |
+| `<absolute-path>` (Direct vault default only — not user-facing as a flag in v0.6.0) | One call with `vault: <absolute-path>` (skips the config-file lookup; behavior matches `vault: personal` when the path resolves to the personal vault) |
 | `both` | Two parallel calls in one assistant turn — one with `vault: project`, one with `vault: personal` |
 
 `scope:both` and the Direct-vault default both depend on the [archivist `vault:` extension](../../agents/archivist.md#vault) added in this same release.
@@ -209,10 +209,10 @@ After a multi-result list, do NOT prompt for "pick a number to view the body." T
 | `type:` value not in the known seven types (e.g., `type:decsion`) | Stop with: *"Unknown note type: `{value}`. Valid: idea, exploration, decision, session, thread, task, meeting."* No archivist call. |
 | `since:` value isn't ISO date `YYYY-MM-DD` | Stop with: *"`since:` requires ISO date `YYYY-MM-DD`. Got `{input}`."* Natural-language dates (`last week`, `yesterday`) are out of scope for v0.6.0. |
 | Attendee token with disallowed characters (anything outside `[A-Za-z0-9._-]`) | Reject with: *"`attendees:` names must match `[A-Za-z0-9._-]+`. Got `{token}`. Quoted/multi-word names are not supported in v0.6.0."* Prevents the value from carrying punctuation into the natural-language filter clause. |
-| `scope:both` when `~/.claude/cairn/identity.md` is missing or `personal_vault:` unset | The personal-vault archivist call returns the "personal vault not configured" error. Present that as a partial result in Step 4: project-vault results still show, plus a one-line `ⓘ Personal vault not configured — run /cairn-setup to enable.` Do not fail the whole recall — project results are still useful. |
+| `scope:both` when `~/.claude/cairn/config.md` is missing or `personal_vault:` unset | The personal-vault archivist call returns the "personal vault not configured" error. Present that as a partial result in Step 4: project-vault results still show, plus a one-line `ⓘ Personal vault not configured — run /cairn-setup to enable.` Do not fail the whole recall — project results are still useful. |
 | `scope:project` from outside a git repo | Stop with: *"`scope:project` requires a git repo. Run from inside a project, or use `scope:personal`."* |
 | Project mode but `.notes/` symlink missing at trunk | Surface the missing-vault state to the user: *"Project vault not initialized at {trunk}/.notes. Run `/cairn-setup` to create it, or use `scope:personal` to search the personal vault."* Don't dispatch archivist — the search would return "vault not found" and the user just gets a confusing empty result. |
-| Direct vault default — `~/.claude/cairn/identity.md` missing, so `notes_root` can't be parsed | Fall back to Default mode (`scope:personal` with the `~/notes/` default), and surface the missing-identity message in the response. Don't fail recall — the user gets results from somewhere reasonable. |
+| Direct vault default — `~/.claude/cairn/config.md` missing, so `notes_root` can't be parsed | Fall back to Default mode (`scope:personal` with the `~/notes/` default), and surface the missing-config message in the response. Don't fail recall — the user gets results from somewhere reasonable. |
 | One vault returns results, the other returns zero (scope:both) | Show the populated vault's results normally; under a second heading, show `"No matches in {other-vault}."` Don't suppress the empty section — the user wants to know the absence is real, not a bug. |
 | Archivist times out or errors on one of two parallel calls | Show the successful call's results; under a heading for the failed vault, show `"⚠ {vault} search failed: {error}."` Don't fail the whole recall. |
 | Single result has no `date:` frontmatter and a `since:` filter was active | Archivist's filter excludes it. The user gets a "no results" response. If this turns out to be common (many older notes lack `date:`), revisit by making `since:` skip filtering when the field is missing. |
