@@ -1,6 +1,6 @@
 ---
 name: session-review
-description: Review conversation sessions for project-specific learnings (AGENTS.md / .notes/), resolved tracked items (today's daily plan), and cairn-notes plugin-misbehavior signal (GitHub issues via /issue-create)
+description: Review conversation sessions for project-specific learnings (AGENTS.md / .notes/), resolved tracked items (today's daily plan), and cairn-notes plugin-misbehavior signal (GitHub issues)
 ---
 
 # Session Review
@@ -70,11 +70,11 @@ Zero survivors is fine. Better to capture nothing than to grow an archive you ne
 | Key insight | .notes/ | SESSION type | "Realized the auth flow requires..." |
 | Tracked-item resolution | today's daily plan | matching line | "`#734 → triaged out-of-scope`" |
 
-**Issue routes** (cairn-notes plugin-improvement signal; routed to a GitHub issue against this repo via `/issue-create`. The skill drafts the candidate at the approval gate; on approval it invokes `/issue-create` with the draft as seed text and `/issue-create` runs its own approval flow before posting):
+**Issue routes** (cairn-notes plugin-improvement signal; routed to a GitHub issue against this repo. The skill drafts the candidate at the approval gate; on approval it hands the draft to whatever issue-creation tool is available (e.g., `/issue-create` if installed; otherwise `gh issue create` directly), which runs its own approval flow before posting):
 
 | Learning Type | Destination | Target | Example |
 |---------------|-------------|--------|---------|
-| Plugin-improvement candidate | GitHub issue (this repo) | `/issue-create` | "scribe wrote the meeting note to the wrong vault when invoked from a worktree" |
+| Plugin-improvement candidate | GitHub issue (this repo) | issue-creation tool (e.g., `/issue-create` or `gh issue create`) | "scribe wrote the meeting note to the wrong vault when invoked from a worktree" |
 
 > **Scoping note.** Pointers that name internal infrastructure (private URLs, internal IDs, internal tooling) are project-scoped — write them to `.notes/` on the originating project.
 
@@ -87,7 +87,7 @@ Zero survivors is fine. Better to capture nothing than to grow an archive you ne
 Read back through the session with **two lenses**:
 
 - **Technical lens.** Moments where something about the code, architecture, or project state was discovered, decided, or clarified.
-- **Plugin-improvement lens.** Moments where an agent or skill shipped under `plugins/cairn-notes/` misbehaved or has a clear sharp edge worth filing — confusing output, a missed routing rule, a workflow that wasted a turn, a guardrail that fired in the wrong direction. Signal about *the plugin itself* — routes to a GitHub issue against this repo via `/issue-create`, not vault. Strictly scoped: cross-plugin gripes (other plugins, the harness itself, unrelated tools) don't qualify here — they're out of scope for this skill.
+- **Plugin-improvement lens.** Moments where an agent or skill shipped under `plugins/cairn-notes/` misbehaved or has a clear sharp edge worth filing — confusing output, a missed routing rule, a workflow that wasted a turn, a guardrail that fired in the wrong direction. Signal about *the plugin itself* — routes to a GitHub issue against this repo, not vault. Strictly scoped: cross-plugin gripes (other plugins, the harness itself, unrelated tools) don't qualify here — they're out of scope for this skill.
 
 A session can have signal in one lens, both, or neither. Ignore routine task execution. Flag candidates — no quota. Most sessions produce zero to two.
 
@@ -96,7 +96,7 @@ A session can have signal in one lens, both, or neither. Ignore routine task exe
 Run each candidate against the four questions above. Drop any that don't pass.
 
 - **Vault-route candidates** (AGENTS.md / `.notes/` / daily plan): all four questions must pass.
-- **Issue-route candidates** (GitHub issue against this repo via `/issue-create`): all four apply, with these route-specific tunings:
+- **Issue-route candidates** (GitHub issue against this repo): all four apply, with these route-specific tunings:
   - **Q1 (Novel)** — dedup also against the open issue list. Run e.g. `gh issue list --repo SnowboardTechie/cairn-notes --state open --search "scribe vault routing"`, substituting the candidate's specific topic (skill or agent name, the misbehavior verb, the affected workflow). If a clearly-matching open issue exists, drop the candidate; the existing issue *is* the signal. (See the keyword-hygiene callout below before constructing the search string.)
   - **Q2 (Durable & scoped)** — read as *"reproducible miss, not one-off hiccup."* The scope sub-check (only `plugins/cairn-notes/` agents/skills) is already enforced by the lens definition in Step 1; Q2 doesn't need to re-filter for it.
   - **Q3 (Future-actionable)** — read as *"would implementing the fix change future agent or skill behavior in a real way, or is it cosmetic?"* If a fix wouldn't change any future agent's output, the candidate is a vibe rather than a defect; drop.
@@ -245,7 +245,7 @@ Use this variant when archivist (Step 2) surfaced an existing note on the same t
 
 ### GitHub-issue draft
 
-Use this for plugin-improvement candidates that survived the issue-route Signal Test. The body — everything from `Filing this against …` through the final `## Open questions` section — mirrors `/issue-create` Stage 1.3's default-structure headings verbatim, so when the user approves at Step 5 the body becomes seed text for `/issue-create`'s Stage 2 and most areas already-answered are skipped.
+Use this for plugin-improvement candidates that survived the issue-route Signal Test. The body — everything from `Filing this against …` through the final `## Open questions` section — uses default-structure headings (Problem / Proposed behavior / Scope / Implementation hints / Acceptance / Open questions) so it's usable verbatim as seed text for an interactive issue-creation tool, or as a finished body for a non-interactive one.
 
 ```markdown
 ### Proposed GitHub Issue
@@ -279,7 +279,7 @@ Filing this against `SnowboardTechie/cairn-notes`:
 
 ## Implementation hints
 
-{Constraints, prior art (e.g., a related PR or note), or `(none)` if not load-bearing. Cover this section in the seed when you have it — `/issue-create`'s Stage 2.1 area 4 will otherwise re-ask the same Implementation-hints area.}
+{Constraints, prior art (e.g., a related PR or note), or `(none)` if not load-bearing. Cover this section in the seed when you have it — an interactive issue-creation tool will otherwise re-ask the same Implementation-hints area.}
 
 ## Acceptance criteria
 
@@ -288,11 +288,11 @@ Filing this against `SnowboardTechie/cairn-notes`:
 
 ## Open questions
 
-- {a question worth flagging for the issue body — or drop this entire `## Open questions` section, heading and all, if there are none. Leaving placeholder bullets here makes `/issue-create`'s Stage 3.3 fire on a non-question.}
+- {a question worth flagging for the issue body — or drop this entire `## Open questions` section, heading and all, if there are none. Leaving placeholder bullets here makes an interactive tool's open-questions resolution fire on a non-question.}
 
 ---
 
-*Approve to invoke `/issue-create` with this draft as the seed. `/issue-create` will run its own approval flow before posting.*
+*Approve to post this draft as a new GitHub/Forgejo issue. The handoff will run its own approval flow before posting.*
 ```
 
 ### Daily-plan update
@@ -343,4 +343,4 @@ Use this for Step 1.6 outputs. Show the existing line and the proposed replaceme
 - Do NOT write prose-heavy narratives. Notes must be scannable in Obsidian at a glance — tables, bullets, wikilinks to related notes, short paragraphs. A 300-word reflective essay is the failure mode, not the goal.
 - Do NOT hit a quota. If only one candidate survives the Signal Test, propose one. If none survive, propose none. Never pad.
 - Do NOT report `No signal — routine execution` without confirming all three channels came up empty (see Edge Cases — No survivors).
-- Do NOT post issues to GitHub directly. Plugin-improvement candidates are presented at the approval gate as drafts; on approval, `/issue-create` is invoked with the draft as seed and runs its own approval flow before posting (two gates total). The skill is a router, not the destination owner.
+- Do NOT post issues to GitHub directly. Plugin-improvement candidates are presented at the approval gate as drafts; on approval, an issue-creation tool is invoked with the draft as seed and runs its own approval flow before posting (two gates total). The skill is a router, not the destination owner.

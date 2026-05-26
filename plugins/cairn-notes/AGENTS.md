@@ -26,7 +26,7 @@ cairn-notes is **slash commands on top, helper spokes underneath**. Users invoke
  │  Slash commands (skills)                                        │
  │                                                                 │
  │  /capture   /recall   /plan-workday   /plan-week   /meeting-sync│
- │  /cairn-setup   /session-review   /issue-create   /issue-work…  │
+ │  /cairn-setup   /session-review …                               │
  └────────────────────────────────┬────────────────────────────────┘
                                   │  Task(subagent_type=…)
                                   ▼
@@ -66,7 +66,7 @@ When an existing spoke already does adjacent reasoning, prefer a sibling skill o
 
 When spawning parallel Task or Explore agents, each agent needs its own output destination — never a shared file that multiple agents append to. Concurrent appends interleave silently and corrupt the output; file locking isn't reliable across agent boundaries. Two safe shapes:
 
-- **File-per-agent** — the orchestrator picks a unique filename per agent (e.g., `explore-{area-slug}.md`); each agent writes its single file; the orchestrator reads them back for synthesis. See [issue-work/SKILL.md](skills/issue-work/SKILL.md) Phase 2.1.
+- **File-per-agent** — the orchestrator picks a unique filename per agent (e.g., `explore-{area-slug}.md`); each agent writes its single file; the orchestrator reads them back for synthesis.
 - **Return-by-message** — each agent returns its findings in the Task result; the orchestrator synthesizes into a single file. See [session-review/SKILL.md](skills/session-review/SKILL.md) Step 2.
 
 Do not instruct parallel agents to "append to `shared.md` under a `## Area: {name}` heading" — that shape invites the anti-pattern the *Parallelism* criterion above is describing.
@@ -150,7 +150,7 @@ These are the moments worth capturing — the point of cairn-notes is low-fricti
 
 Scribe writes immediately on invocation. No previews, no confirmation prompts — the calling skill (e.g., `/capture`) owns any approval gate.
 
-**Scope.** This table covers *vault-note capture* — durable, project-specific knowledge written into Obsidian by `@scribe`. Plugin-misbehavior signal (a cairn-notes agent or skill that misbehaved or has a sharp edge worth filing) routes to a GitHub issue against this repo via `/issue-create` — see `skills/session-review/SKILL.md` for the plugin-improvement-lens flow.
+**Scope.** This table covers *vault-note capture* — durable, project-specific knowledge written into Obsidian by `@scribe`. Plugin-misbehavior signal (a cairn-notes agent or skill that misbehaved or has a sharp edge worth filing) routes to a GitHub issue against this repo — see `skills/session-review/SKILL.md` for the plugin-improvement-lens flow.
 
 ---
 
@@ -225,7 +225,7 @@ Not:
 
 > Do not auto-open the PR. User approves ship.
 
-Prohibitions leave the orchestrator to fill the positive shape, which often lands as a silent stop — the user has to pull the thread ("why did you stop?") to get moving. Discovered in [#10](https://github.com/SnowboardTechie/cairn-notes/issues/10) / [#31](https://github.com/SnowboardTechie/cairn-notes/pull/31); `issue-work/SKILL.md` Phase 4.3 was rewritten from the negative form to the positive form.
+Prohibitions leave the orchestrator to fill the positive shape, which often lands as a silent stop — the user has to pull the thread ("why did you stop?") to get moving. Surfaced in [#10](https://github.com/SnowboardTechie/cairn-notes/issues/10) / [#31](https://github.com/SnowboardTechie/cairn-notes/pull/31); a ship-approval gate was rewritten from the negative form to the positive form.
 
 ### Per-user config vs per-project state vs plugin-local
 
@@ -234,7 +234,7 @@ Three storage surfaces. The decision rule is: "does this vary by user?" → `~/.
 | Surface | Varies by | Examples |
 |---|---|---|
 | `~/.claude/cairn/*.md` | User (vault path, working hours, source lists) | `config.md` (via `/cairn-setup`), `planning-sources.md` (via `/plan-workday`) |
-| `.notes/.agents/{skill}/` | Project (per-repo caches, drafts, session context) | `.notes/.agents/drafts/`, `.notes/.agents/issue-create/type-ids.md` |
+| `.notes/.agents/{skill}/` | Project (per-repo caches, drafts, session context) | `.notes/.agents/drafts/`, `.notes/.agents/meeting-sync/quarterly-planning-2026-q2/` |
 | Plugin body (`SKILL.md`, `references/`) | Neither — ships with the plugin | Static instruction text, example templates |
 
 Per-user config files are bootstrapped by the owning skill on first use (prompt → write → proceed), matching the `/cairn-setup` pattern. Per-project state uses the worktree-aware trunk-resolution protocol from [agent-workspace/SKILL.md](skills/agent-workspace/SKILL.md).
