@@ -5,7 +5,8 @@ All notable changes to cairn-notes are documented here. Format follows [Keep a C
 ## [Unreleased]
 
 ### Removed
-- `dependency-review` and `dependency-triage` skills extracted out of the plugin to the user's personal dotfiles, continuing the engineering-workflow trim from epic [#94](https://github.com/SnowboardTechie/cairn-notes/issues/94) (these were the lowest-coupling extraction — no shared spokes, no cross-skill calls). Neither produced or retrieved a vault artifact, so both failed the capture-first test. **Action for existing users:** the `/dependency-review` and `/dependency-triage` slash commands no longer ship in cairn-notes — install them from your own dotfiles or another plugin if you used them. Also drops the now-fully-dead "Forge/ticket workflows" row from the README skill table (its other five skills were extracted in 0.6.1).
+- `dependency-review` and `dependency-triage` skills extracted to the user's personal dotfiles — continuing the engineering-workflow trim from epic [#94](https://github.com/SnowboardTechie/cairn-notes/issues/94) (these were the lowest-coupling extraction: no shared spokes, no cross-skill calls). Neither produced or retrieved a vault artifact, so both failed the capture-first test. **Action for existing users:** the `/dependency-review` and `/dependency-triage` slash commands no longer ship in cairn-notes — install them from your own dotfiles or another plugin if you used them.
+- README skill table: dropped the now-fully-dead "Forge/ticket workflows" row (its other five skills were extracted in 0.6.1).
 
 ## [0.6.1] — 2026-05-26
 
