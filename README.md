@@ -1,5 +1,14 @@
 # cairn-notes
 
+> [!NOTE]
+> **cairn-notes is no longer actively maintained (sunset 2026-05).**
+> The author has stepped back from daily use — the capture/recall surface this
+> plugin pioneered is now covered for me by other Claude Code plugins
+> (claude-mem for memory, context-mode for context efficiency, the Obsidian
+> suite for vault work). It remains here, forkable under AGPL-3.0, for anyone
+> who wants the capture-first note model or the hub-and-spoke skill
+> architecture as a starting point. Issues and PRs may not be triaged.
+
 **A capture-first note system for Claude Code, native to Obsidian.**
 
 cairn-notes turns conversations into durable trail markers — *cairns* — that pile up in your Obsidian vault. You capture insights, decisions, explorations, and meeting notes with one-line slash commands; the plugin handles vault routing, note-type templates, wikilinks, and worktree-aware paths so the friction stays near zero.
