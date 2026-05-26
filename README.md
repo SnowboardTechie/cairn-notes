@@ -112,7 +112,6 @@ cairn-notes is **slash commands on top, helper spokes underneath**. You invoke s
 | `/meeting-sync` | Paste meeting notes → MEETING anchor + spin-offs |
 | `/session-review` | Review a session for vault notes and plugin issues |
 | `/cairn-setup` | First-run vault config setup; re-runnable any time |
-| `/issue-create`, `/issue-work`, `/pr-self-review`, `/ship`, `/dependency-review`, `/dependency-triage`, `/update-pr-description` | Forge/ticket workflows |
 
 ### Helper spokes (not user-facing)
 
@@ -125,8 +124,6 @@ cairn-notes is **slash commands on top, helper spokes underneath**. You invoke s
 | forge | sonnet | Daily planning (goals, first steps) |
 | kindle | sonnet | Flow-barrier coaching |
 | scout | sonnet | Developer-forge activity for planning |
-| impl-reviewer | sonnet | Single-lens implementation review |
-| ticket-analyst | haiku | Issue/PR intake for `/issue-work` |
 
 Spokes don't redirect users to a hub anymore — each spoke's description names the skills that call it, and a direct `@archivist`-style invocation works for power users.
 
