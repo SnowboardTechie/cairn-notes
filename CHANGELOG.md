@@ -4,6 +4,12 @@ All notable changes to cairn-notes are documented here. Format follows [Keep a C
 
 ## [Unreleased]
 
+_No unreleased changes._
+
+## [0.6.1] — 2026-05-26
+
+**Engineering-workflow extraction + post-v0.6.0 capture-first tightening.** This cut pairs two threads of work that landed since 0.6.0: descoping user-profile memory + the `session-review` collaboration lens (formerly its own scope under [#96](https://github.com/SnowboardTechie/cairn-notes/issues/96)), and extracting the five engineering-workflow skills + two engineering-only spoke agents to the user's personal dotfiles (epic [#94](https://github.com/SnowboardTechie/cairn-notes/issues/94)). Net effect: cairn-notes is now exclusively vault notes, vault config, and capture-flow orchestration. **Action for existing users:** re-run `/cairn-setup` to migrate `~/.claude/cairn/identity.md` → `~/.claude/cairn/config.md` (no automatic rename); engineering-workflow slash commands (`/issue-create`, `/issue-work`, `/pr-self-review`, `/ship`, `/update-pr-description`) no longer ship in cairn-notes — install them from your own dotfiles or another plugin if you used them.
+
 ### Added
 - `plugins/cairn-notes/AGENTS.md` Git & Commits section gains a **Pre-PR check sweep** bullet — names the two lint patterns CI runs (docs-lint trailing-slash regex; `scripts/lint-frontmatter.py`), tells agents to run them before `git push`, and documents the `actions/checkout` flake symptom + the `gh run rerun --failed` resolution so a transient infra failure doesn't get mistaken for a code defect.
 
@@ -174,7 +180,8 @@ First public release. Complete port from the OpenCode/OhMyOpenAgent implementati
 ### Removed
 - `PORTING.md` — internal tracker from the OpenCode → Claude Code port. The port is done; the file was stale (GitHub repo already exists, "remaining" items all landed). Historical context preserved in git history.
 
-[Unreleased]: https://github.com/SnowboardTechie/cairn-notes/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/SnowboardTechie/cairn-notes/compare/v0.6.1...HEAD
+[0.6.1]: https://github.com/SnowboardTechie/cairn-notes/releases/tag/v0.6.1
 [0.6.0]: https://github.com/SnowboardTechie/cairn-notes/releases/tag/v0.6.0
 [0.5.0]: https://github.com/SnowboardTechie/cairn-notes/releases/tag/v0.5.0
 [0.4.3]: https://github.com/SnowboardTechie/cairn-notes/releases/tag/v0.4.3
